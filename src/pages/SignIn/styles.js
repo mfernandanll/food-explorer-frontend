@@ -75,6 +75,10 @@ export const Form = styled.div`
   padding: 4rem 3.5rem;
   border-radius: 1.6rem;
 
+  > h1 {
+    display: none;
+  }
+
   > .inputs {
     margin-bottom: 2rem;
   }
@@ -93,8 +97,15 @@ export const Form = styled.div`
   @media (min-width: ${DEVICE_BREAKPOINTS.MD}) {
     justify-content: center;
     max-height: 29.75rem;
-    min-width: 29.75rem;
+    max-width: 29.75rem;
     background-color: ${({theme}) => theme.COLORS.DARK_700};
     margin-top: 0;
+
+    > h1 {
+      display: block;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
   }
 `
