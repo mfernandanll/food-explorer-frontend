@@ -9,6 +9,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
 
+  > div:first-child {
+    margin-top: 9.875rem;
+  }
+
   animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
 
   @keyframes puff-in-center {
@@ -28,30 +32,6 @@ export const Container = styled.div`
     flex-direction: row;
     align-items: center;
     padding: 0 6.75rem;
-  }
-`
-
-export const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-
-  margin-top: 9.87rem;
-
-  > img {
-    width: 3.12rem;
-  }
-
-  > h1 {
-    font-family: "Roboto", sans-serif;
-    font-size: 2.32rem;
-    white-space: nowrap;
-  }
-
-  @media (min-width: ${DEVICE_BREAKPOINTS.MD}) {
-    flex-grow: 1;
-    margin-top: 0;
   }
 `
 

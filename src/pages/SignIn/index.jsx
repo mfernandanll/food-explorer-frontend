@@ -1,16 +1,12 @@
-import { Container, Form, Formfield, Logo } from "./styles";
-import logo_polygon from "../../assets/logo_polygon.svg";
+import { Container, Form, Formfield } from "./styles";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { Logo } from "../../components/Logo";
 
 export function SignIn(){
   return (
     <Container>
-      <Logo>
-        <img src={logo_polygon} />
-
-        <h1>food explorer</h1>
-      </Logo>
+      <Logo />
 
       <Formfield>
         <Form>

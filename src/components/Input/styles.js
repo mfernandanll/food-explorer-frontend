@@ -5,10 +5,15 @@ export const Container = styled.div`
   height: 3rem;
   padding: 1rem;
 
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
   border-radius: 8px;
   background: ${({theme}) => theme.COLORS.DARK_900};
 
   > input {
+    height: 3rem;
     width: 100%;
 
     background: transparent;
@@ -16,6 +21,7 @@ export const Container = styled.div`
     
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
+
   }
 `
 
