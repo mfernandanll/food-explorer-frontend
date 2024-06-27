@@ -84,9 +84,23 @@ export const OrderIcon = styled.button`
   background: transparent;
   border: none;
 
+  position: relative;
+  color: ${({theme}) => theme.COLORS.LIGHT_100};
+
+  
   > svg {
     font-size: 2.5rem;
-    color: ${({theme}) => theme.COLORS.LIGHT_100};
+  }
+  
+  > span {
+    background-color: ${({theme}) => theme.COLORS.TOMATO_100};
+
+    position: absolute;
+    top: -0.25rem;
+    right: -0.375rem;
+
+    border-radius: 99px;
+    padding-inline: 0.375rem;
   }
 
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {

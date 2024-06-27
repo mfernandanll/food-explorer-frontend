@@ -4,7 +4,11 @@ import { Logo } from "../Logo";
 import { Search } from "../Search";
 import { Button } from "../Button";
 
+import { useMediaQuery } from "react-responsive";
+
 export function Header({ onOpenMenu }) {
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
+
   return (
     <Container>
       <Menu onClick={onOpenMenu}>
@@ -19,6 +23,7 @@ export function Header({ onOpenMenu }) {
 
       <OrderIcon>
         <Receipt/>
+        {!isDesktop && <span>0</span>}
       </OrderIcon>
 
       <Button 
