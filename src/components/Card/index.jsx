@@ -1,27 +1,43 @@
-import { ButtonCounter, Container, Counter } from "./styles";
-import dish1 from "../../assets/Dish1.png";
-import { HeartStraight, Minus, Plus } from "@phosphor-icons/react";
+import { useMediaQuery } from "react-responsive";
+import { ButtonCounter, Container, Counter, Order, Title } from "./styles";
 import { Button } from "../Button"
 
+import { CaretRight, HeartStraight, Minus, Plus } from "@phosphor-icons/react";
+import dish1 from "../../assets/Dish1.png";
+
+
 export function Card() {
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
+
   return (
     <Container>
-      <HeartStraight />
+      <HeartStraight size={"1.5rem"}/>
+
       <img src={dish1} alt="refeicao" />
-      <a href="#">
+
+      <Title>
         <h2>Salada Ravanello</h2>
-      </a>
-      <h2>R$ 49,99</h2>
-      <Counter>
-        <ButtonCounter>
-          <Minus />
-        </ButtonCounter>
-        <span>01</span>
-        <ButtonCounter>
-          <Plus />
-        </ButtonCounter>
-      </Counter>
-      <Button title="incluir"/>
+        <CaretRight size={ isDesktop ? "1.5rem" : "0.875rem"}  />
+      </Title>
+
+      {isDesktop && <p>Presunto de parma e rúcula em um pão com fermentação natural</p>}
+      <span>R$ {"49.99".toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+
+      <Order>
+        <Counter>
+          <ButtonCounter>
+            <Minus />
+          </ButtonCounter>
+
+          <span>01</span>
+
+          <ButtonCounter>
+            <Plus />
+          </ButtonCounter>
+        </Counter>
+
+        <Button title="incluir"/>
+      </Order>
     </Container>
   )
 }

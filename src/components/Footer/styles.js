@@ -11,31 +11,11 @@ export const Container = styled.footer`
   align-items: center;
   justify-content: space-between;
   
-  > div small {
-    font-size: 12px;
+  > small {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.XL}) {
+    padding: 0 8.688rem;
   }
 `;
-
-export const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-
-  margin-top: 9.87rem;
-
-  > img {
-    width: 3.12rem;
-  }
-
-  > h1 {
-    font-family: "Roboto", sans-serif;
-    font-size: 2.32rem;
-    white-space: nowrap;
-  }
-
-  @media (min-width: ${DEVICE_BREAKPOINTS.MD}) {
-    flex-grow: 1;
-    margin-top: 0;
-  }
-`

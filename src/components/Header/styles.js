@@ -11,6 +11,23 @@ export const Container = styled.div`
   
   padding: 1.75rem;
   background: ${({theme}) => theme.COLORS.DARK_700};
+
+  .orders {
+    display: none;
+
+    width: 13.5rem;
+    @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+      display: flex;
+    }
+  }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    gap: 2rem;
+  }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.XL}) {
+    padding: 0 8.688rem;
+  }
 `
 
 export const Menu = styled.button`
@@ -32,37 +49,48 @@ export const Menu = styled.button`
       font-size: 2rem;
     }
   }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    display: none;
+  }
 `;
 
-export const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+export const HeaderSerachArea = styled.div`
+  display: none;
 
-  > img {
-    width: 1.5rem;
-  }
-
-  > h1 {
-    font-family: "Roboto", sans-serif;
-    font-size: 1.6rem;
-    white-space: nowrap;
-  }
-
-  @media (min-width: ${DEVICE_BREAKPOINTS.MD}) {
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    display: block;
     flex-grow: 1;
-    margin-top: 0;
   }
 `
 
-export const Button = styled.button`
+export const SignOutIcon = styled.button`
+  display: none;
   background: transparent;
   border: none;
-  
 
   > svg {
     font-size: 2.5rem;
     color: ${({theme}) => theme.COLORS.LIGHT_100};
   }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    display: block;
+  }
+
+`;
+
+export const OrderIcon = styled.button`
+  background: transparent;
+  border: none;
+
+  > svg {
+    font-size: 2.5rem;
+    color: ${({theme}) => theme.COLORS.LIGHT_100};
+  }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    display: none;
+  }
+
 `;

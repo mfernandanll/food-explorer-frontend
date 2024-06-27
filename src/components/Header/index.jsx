@@ -1,6 +1,8 @@
-import { List, Receipt } from "@phosphor-icons/react";
-import { Button, Container, Menu } from "./styles";
+import { List, Receipt, SignOut } from "@phosphor-icons/react";
+import { SignOutIcon, Container, HeaderSerachArea, Menu, OrderIcon } from "./styles";
 import { Logo } from "../Logo";
+import { Search } from "../Search";
+import { Button } from "../Button";
 
 export function Header({ onOpenMenu }) {
   return (
@@ -11,9 +13,23 @@ export function Header({ onOpenMenu }) {
 
       <Logo size="md" />
 
-      <Button type="button">
+      <HeaderSerachArea>
+        <Search/>
+      </HeaderSerachArea>
+
+      <OrderIcon>
         <Receipt/>
-      </Button>
+      </OrderIcon>
+
+      <Button 
+        className="orders"
+        icon={Receipt}
+        title="Pedidos (0)"
+      />
+      
+      <SignOutIcon>
+        <SignOut/>
+      </SignOutIcon>
     </Container>
   )
 }
