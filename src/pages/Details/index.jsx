@@ -15,6 +15,7 @@ import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
 export function Details() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
@@ -25,7 +26,10 @@ export function Details() {
         onCloseMenu={() => setMenuIsOpen(false)}
       />
       <FixedContent>
-        <Header onOpenMenu={() => setMenuIsOpen(true)} />
+        <Header 
+          onOpenMenu={() => setMenuIsOpen(true)} 
+          isAdmin={isAdmin} 
+        />
         
         <HeadContent>
           <ButtonText title="voltar"/>       
@@ -47,24 +51,31 @@ export function Details() {
               <Tag title="páprica"/>
             </Tags>
             
-            <Order>
-              <Counter>
-                <ButtonCounter>
-                  <Minus />
-                </ButtonCounter>
+              {
+                isAdmin ?
+                <Button 
+                  title="Editar prato" 
+                />
+                :
+                <Order>
+                  <Counter>
+                    <ButtonCounter>
+                      <Minus />
+                    </ButtonCounter>
 
-                <span>01</span>
+                    <span>01</span>
 
-                <ButtonCounter>
-                  <Plus />
-                </ButtonCounter>
-              </Counter>
+                    <ButtonCounter>
+                      <Plus />
+                    </ButtonCounter>
+                  </Counter>
+                  <Button 
+                    icon={isDesktop ? null : Receipt}
+                    title={isDesktop ? "incluir - R$ 25,00" : "pedir - R$ 25,00"} 
+                  />
+                </Order>
+              }
 
-              <Button 
-                icon={isDesktop ? null : Receipt}
-                title={isDesktop ? "incluir - R$ 25,00" : "pedir - R$ 25,00"} 
-              />
-            </Order>
           </DishDetails>
         </MainContent>
 

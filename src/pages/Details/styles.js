@@ -88,6 +88,10 @@ export const DishDetails = styled.section`
       font-size: 1.5rem;
       text-align: start;
     }
+
+    > button {
+      max-width: 8.188rem;
+    }
   }
 `
 export const Tags = styled.section`
