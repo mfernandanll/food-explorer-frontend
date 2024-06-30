@@ -16,8 +16,10 @@ export const Container = styled.div`
     display: none;
 
     width: 13.5rem;
+
     @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
       display: flex;
+      height: 3rem;
     }
   }
 
@@ -70,7 +72,7 @@ export const SignOutIcon = styled.button`
   border: none;
 
   > svg {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: ${({theme}) => theme.COLORS.LIGHT_100};
   }
 

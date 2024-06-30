@@ -20,6 +20,7 @@ import { Navigation } from "swiper/modules";
 
 export function Home() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
@@ -30,7 +31,10 @@ export function Home() {
         onCloseMenu={() => setMenuIsOpen(false)}
       />
       <FixedContent>
-        <Header onOpenMenu={() => setMenuIsOpen(true)} />
+        <Header 
+          onOpenMenu={() => setMenuIsOpen(true)} 
+          isAdmin={isAdmin} 
+        />
         <MainContent>
           
           <Banner>

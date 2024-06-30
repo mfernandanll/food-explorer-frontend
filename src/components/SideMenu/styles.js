@@ -2,9 +2,8 @@ import styled from 'styled-components'
 import { DEVICE_BREAKPOINTS } from "../../styles/deviceBreakpoints";
 
 export const Container = styled.aside`
-  background-color: ${({ theme }) => theme.COLORS.DARK_1000};
+  background-color: ${({ theme }) => theme.COLORS.DARK_400};
   width: 100%;
-  /* height: 100vh; */
 
   display: flex;
   flex-direction: column;
@@ -69,11 +68,12 @@ export const Nav = styled.nav`
   flex: 1;
 
   > a {
-    color: ${({ theme }) => theme.COLORS.LIGHT_100};
+    color: ${({ theme }) => theme.COLORS.LIGHT_300};
+    font-weight: 300;
     display: flex;
     align-items: center;
     padding: 0.625rem;
     font-size: 1.5rem;
-    border-bottom: 1px solid ${({ theme }) => theme.COLORS.LIGHT_300};
+    border-bottom: 1px solid ${({ theme }) => theme.COLORS.DARK_1000};
   }
 `;

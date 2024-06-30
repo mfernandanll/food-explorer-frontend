@@ -6,7 +6,7 @@ import { Button } from "../Button";
 
 import { useMediaQuery } from "react-responsive";
 
-export function Header({ onOpenMenu }) {
+export function Header({ onOpenMenu, isAdmin }) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   return (
@@ -15,16 +15,19 @@ export function Header({ onOpenMenu }) {
         <List />
       </Menu>
 
-      <Logo size="md" />
+      <Logo size="md" isAdmin={isAdmin} />
 
       <HeaderSerachArea>
         <Search/>
       </HeaderSerachArea>
 
-      <OrderIcon>
-        <Receipt/>
-        {!isDesktop && <span>0</span>}
-      </OrderIcon>
+      {
+        !isAdmin && 
+        <OrderIcon>
+          <Receipt/>
+          {!isDesktop && <span>0</span>}
+        </OrderIcon>
+      }
 
       <Button 
         className="orders"
