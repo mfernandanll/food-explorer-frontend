@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import { Banner, BannerText, Cards, Container, FixedContent, MainContent } from "./styles";
-import { DEVICE_BREAKPOINTS } from '../../styles/deviceBreakpoints';
 
 import { Header } from "../../components/Header";
 import { SideMenu } from "../../components/SideMenu";
