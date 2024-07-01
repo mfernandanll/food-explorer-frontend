@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row } from "./styles";
 
 import { ButtonText } from "../../components/ButtonText";
@@ -17,6 +18,7 @@ export function New(){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true);
 
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
   return (
     <Container>
       <SideMenu
@@ -34,7 +36,7 @@ export function New(){
         </HeadContent>
 
         <MainContent>   
-          <h1>Novo Prato</h1>
+          <h1>{ isDesktop ? "Adicionar prato" : "Novo Prato"} </h1>
 
           <Form>
             <Row>
