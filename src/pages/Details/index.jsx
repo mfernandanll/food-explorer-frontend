@@ -32,7 +32,7 @@ export function Details() {
         />
         
         <HeadContent>
-          <ButtonText title="voltar"/>       
+          <ButtonText iconSize={32} title="voltar"/>       
         </HeadContent>
 
         <MainContent>   
