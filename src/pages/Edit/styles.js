@@ -105,6 +105,24 @@ export const Row = styled.div`
   }
 `
 
+export const ButtonsRow = styled.div`
+  display: flex;
+  gap: 2rem;
+
+  > button {
+    padding: 0.75rem;
+  }
+
+  .delete {
+    background-color: ${({ theme }) => theme.COLORS.DARK_800};
+  }
+
+  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    width: 35%;
+    align-self: flex-end;
+  }
+`
+
 export const Image = styled.div`
   position: relative;
 
