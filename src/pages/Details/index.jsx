@@ -13,9 +13,8 @@ import { Button } from "../../components/Button";
 import { ButtonText } from "../../components/ButtonText";
 import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
-export function Details() {
+export function Details({ isAdmin }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 

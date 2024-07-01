@@ -13,9 +13,8 @@ import { Textarea } from "../../components/Textarea";
 
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 
-export function Edit(){
+export function Edit({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
 
   return (
     <Container>

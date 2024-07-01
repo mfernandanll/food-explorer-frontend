@@ -4,11 +4,9 @@ import { Button } from "../Button"
 
 import { CaretRight, HeartStraight, Minus, PencilSimple, Plus } from "@phosphor-icons/react";
 import dish1 from "../../assets/Dish1.png";
-import { useState } from "react";
 
 
-export function Card() {
-  const [isAdmin, setIsAdmin] = useState(true);
+export function Card({ isAdmin }) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   return (

@@ -14,9 +14,8 @@ import { Textarea } from "../../components/Textarea";
 
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 
-export function New(){
+export function New({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   return (

@@ -18,9 +18,8 @@ import "swiper/css/navigation";
 // Swiper Required Module
 import { Navigation } from "swiper/modules";
 
-export function Home() {
+export function Home({ isAdmin }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
@@ -64,16 +63,16 @@ export function Home() {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
             </Swiper>
 
@@ -96,16 +95,16 @@ export function Home() {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
             </Swiper>
             
@@ -129,16 +128,16 @@ export function Home() {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
               <SwiperSlide>
-                <Card />
+                <Card isAdmin={isAdmin} />
               </SwiperSlide>
             </Swiper>
             
