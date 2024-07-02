@@ -3,6 +3,7 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
 import { Section } from "../../components/Section";
+import { Link } from "react-router-dom";
 
 export function SignUp(){
   return (
@@ -35,7 +36,9 @@ export function SignUp(){
               title="Criar conta"
             />
 
-            <a href="">Já tenho uma conta</a>
+            <Link to="/">
+              Já tenho uma conta
+            </Link>
           </Form>  
 
         </Formfield>

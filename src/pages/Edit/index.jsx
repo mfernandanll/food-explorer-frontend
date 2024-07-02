@@ -12,9 +12,16 @@ import { FoodItem } from "../../components/FoodItem";
 import { Textarea } from "../../components/Textarea";
 
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 export function Edit({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  function handleBack() {
+    navigate(-1);
+  }
 
   return (
     <Container>
@@ -29,7 +36,7 @@ export function Edit({ isAdmin }){
         />
         
         <HeadContent>
-          <ButtonText title="voltar" iconSize={22}/>       
+          <ButtonText title="voltar" iconSize={22} onClick={handleBack}/>       
         </HeadContent>
 
         <MainContent>   

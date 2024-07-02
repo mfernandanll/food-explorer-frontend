@@ -18,10 +18,18 @@ import "swiper/css/navigation";
 // Swiper Required Module
 import { Navigation } from "swiper/modules";
 
+import { useNavigate } from "react-router-dom";
+
 export function Home({ isAdmin }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
+
+  const navigate = useNavigate();
+
+  function handleDetails(id) {
+    navigate(`/details/${id}`);
+  }
 
   return (
     <Container>
@@ -63,16 +71,16 @@ export function Home({ isAdmin }) {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
             </Swiper>
 
@@ -95,16 +103,16 @@ export function Home({ isAdmin }) {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
             </Swiper>
             
@@ -128,16 +136,16 @@ export function Home({ isAdmin }) {
               className="mySwiper"
             >
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
               <SwiperSlide>
-                <Card isAdmin={isAdmin} />
+                <Card isAdmin={isAdmin} handleDetails={handleDetails}/>
               </SwiperSlide>
             </Swiper>
             

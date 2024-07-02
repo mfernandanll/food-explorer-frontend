@@ -13,10 +13,18 @@ import { Button } from "../../components/Button";
 import { ButtonText } from "../../components/ButtonText";
 import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
+import { useNavigate } from 'react-router-dom';
+
 export function Details({ isAdmin }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
+
+  const navigate = useNavigate();
+
+  function handleBack() {
+    navigate(-1);
+  }
 
   return (
     <Container>
@@ -31,7 +39,7 @@ export function Details({ isAdmin }) {
         />
         
         <HeadContent>
-          <ButtonText iconSize={32} title="voltar"/>       
+          <ButtonText iconSize={32} title="voltar" onClick={handleBack}/>       
         </HeadContent>
 
         <MainContent>   

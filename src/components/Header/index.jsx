@@ -5,9 +5,16 @@ import { Search } from "../Search";
 import { Button } from "../Button";
 
 import { useMediaQuery } from "react-responsive";
+import { useNavigate } from 'react-router-dom';
 
 export function Header({ onOpenMenu, isAdmin }) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+  const navigate = useNavigate();
+  
+  function handleSignOut() {
+    navigate("/");
+  }
 
   return (
     <Container>
@@ -35,7 +42,7 @@ export function Header({ onOpenMenu, isAdmin }) {
         title="Pedidos (0)"
       />
       
-      <SignOutIcon>
+      <SignOutIcon onClick={handleSignOut}>
         <SignOut/>
       </SignOutIcon>
     </Container>

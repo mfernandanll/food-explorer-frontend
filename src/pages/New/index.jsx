@@ -13,11 +13,19 @@ import { FoodItem } from "../../components/FoodItem";
 import { Textarea } from "../../components/Textarea";
 
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 export function New({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
+
+  const navigate = useNavigate();
+
+  function handleBack() {
+    navigate(-1);
+  }
+
   return (
     <Container>
       <SideMenu
@@ -31,7 +39,7 @@ export function New({ isAdmin }){
         />
         
         <HeadContent>
-          <ButtonText title="voltar" iconSize={22}/>       
+          <ButtonText title="voltar" iconSize={22} onClick={handleBack}/>       
         </HeadContent>
 
         <MainContent>   

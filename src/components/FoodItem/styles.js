@@ -14,10 +14,10 @@ export const Container = styled.div`
 
   padding: 0.5rem 1rem;
 
-  background-color: ${({ theme, isNew }) =>
-    isNew ? "transparent" : theme.COLORS.LIGHT_600};
-  outline: ${({ theme, isNew }) =>
-    isNew ? `1px dashed ${theme.COLORS.LIGHT_500}` : "none"};
+  background-color: ${({ theme, $isNew }) =>
+    $isNew ? "transparent" : theme.COLORS.LIGHT_600};
+  outline: ${({ theme, $isNew }) =>
+    $isNew ? `1px dashed ${theme.COLORS.LIGHT_500}` : "none"};
 
   border-radius: 8px;
 
