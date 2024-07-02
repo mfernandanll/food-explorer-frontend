@@ -1,46 +1,46 @@
-import { Container, Form, Formfield } from "./styles";
+import { Container, Content, Form, Formfield } from "./styles";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
+import { Section } from "../../components/Section";
 
 export function SignUp(){
   return (
     <Container>
-      <Logo />
+      <Content>
+        <Logo />
+        <Formfield>
+          <Form>
+            <h1>Crie sua conta</h1>
 
-      <Formfield>
-        <Form>
-          <h1>Faça login</h1>
-          <div className="inputs">
-            <p>Seu nome</p>
+            <Section title="Seu nome" className="inputs">
+              <Input
+                placeholder="Exemplo: Maria da Silva"
+              />
+            </Section>
 
-            <Input
-              placeholder="Exemplo: Maria da Silva"
+            <Section title="Email" className="inputs">
+              <Input
+                placeholder="Exemplo: exemplo@exemplo.com.br"
+              />
+            </Section>
+
+            <Section title="Senha" className="inputs">
+              <Input
+                placeholder="No mínimo 6 caracteres"
+              />
+            </Section>
+
+            <Button
+              title="Criar conta"
             />
-          </div>
-          <div className="inputs">
-            <p>Email</p>
 
-            <Input
-              placeholder="Exemplo: exemplo@exemplo.com.br"
-            />
-          </div>
+            <a href="">Já tenho uma conta</a>
+          </Form>  
 
-          <div className="inputs">
-            <p>Senha</p>
+        </Formfield>
 
-            <Input
-              placeholder="No mínimo 6 caracteres"
-            />  
-          </div>
-
-          <Button
-            title="Criar conta"
-          />
-
-          <a href="">Já tenho uma conta</a>
-        </Form>  
-      </Formfield>
+      </Content>
       
     </Container>
   );
