@@ -9,8 +9,8 @@ export function Routes() {
   return (
     <BrowserRouter>
       {
-        <AppRoutes isAdmin={isAdmin} />
-        // <AuthRoutes />
+        // <AppRoutes isAdmin={isAdmin} />
+        <AuthRoutes />
       }
     </BrowserRouter>
   )
