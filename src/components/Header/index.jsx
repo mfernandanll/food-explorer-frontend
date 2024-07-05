@@ -8,7 +8,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../hooks/auth";
 
-export function Header({ onOpenMenu, isAdmin }) {
+export function Header({ onOpenMenu, isAdmin, setSearch }) {
   const { signOut } = useAuth();
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
@@ -32,7 +32,7 @@ export function Header({ onOpenMenu, isAdmin }) {
       <Logo size="md" isAdmin={isAdmin} />
 
       <HeaderSerachArea>
-        <Search/>
+        <Search setSearch={setSearch}/>
       </HeaderSerachArea>
 
       {

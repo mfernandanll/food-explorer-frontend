@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
 import { useNavigate } from "react-router-dom";
 
-export function SideMenu({ menuIsOpen, onCloseMenu }) {
+export function SideMenu({ menuIsOpen, onCloseMenu, setSearch }) {
   const [isAdmin, setIsAdmin] = useState(true);
 
   const { signOut } = useAuth();
@@ -32,7 +32,7 @@ export function SideMenu({ menuIsOpen, onCloseMenu }) {
         )}
       </Header>
       <Content>
-        <Search/>
+        <Search setSearch={setSearch}/>
         <Nav>
           {isAdmin && 
             <a href="#" onClick={handleNew}>

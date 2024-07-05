@@ -25,6 +25,8 @@ export const Container = styled.div`
     font-family: "Roboto", sans-serif;
     font-size: 1rem;
 
+    color: ${({ theme }) => theme.COLORS.LIGHT_100};
+    
     &:focus {
       border: 1px solid ${({ theme }) => theme.COLORS.LIGHT_100};
     }
