@@ -14,11 +14,20 @@ import { Textarea } from "../../components/Textarea";
 
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../services/api";
 
 export function New({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
+  
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+	const [description, setDescription] = useState("");
+
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState("");
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
@@ -35,6 +44,58 @@ export function New({ isAdmin }){
   function handleAddTag() {
     setTags((prevState) => [...prevState, newTag]);
     setNewTag("");
+  }
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+    setImage(file);
+    setFileName(file.name);
+  }
+
+  async function handleNewDish() {
+    if (!image) {
+      return alert("Selecione a imagem do prato")
+    }
+
+    if (!name) {
+      return alert("Digite o nome do prato")
+    }
+
+    if (!category) {
+      return alert("Selecione a categoria do prato")
+    }
+
+    if (tags.length === 0) {
+      return alert("Informe ao menos um ingrediente do prato")
+    }
+
+    if (!price) {
+      return alert("Informe o preço do prato")
+    }
+
+    if (!description) {
+      return alert("Digite a descrição do prato")
+    }
+
+    const formdata = new FormData();
+    formdata.append("image", image);
+    formdata.append("name", name);
+    formdata.append("category", category);
+    formdata.append("price", price);
+    formdata.append("description", description);
+    formdata.append("ingredients", JSON.stringify(tags));
+
+    try {
+      await api.post("/dishes", formdata);
+      alert("Prato cadastrado com sucesso!");
+      navigate("/");
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert("Não foi possível cadastrar");
+      }
+    }
   }
 
   return (
@@ -63,21 +124,33 @@ export function New({ isAdmin }){
                   <label htmlFor="image">
                     <UploadSimple size={24} />
 
-                    <span>Selecione imagem</span>
+                    <span>{fileName || "Selecione imagem"}</span>
 
-                    <input id="image" type="file" />
+                    <input 
+                      id="image" 
+                      type="file" 
+                      onChange={handleImageChange}
+                    />
                   </label>
                 </Image>
               </Section>
 
               <Section title="Nome" className="name">
-                <Input type="text" placeholder="Ex.: Salada Ceasar"/>
+                <Input 
+                  type="text" 
+                  placeholder="Ex.: Salada Ceasar"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
               </Section>
 
               <Section title="Categoria" className="category">
                 <Category>
                   <label htmlFor="category">
-                    <select id="category">
+                    <select 
+                      id="category" 
+                      value={category}
+                      onChange={e => setCategory(e.target.value)}>
                       <option value="">Selecionar</option>
                       <option value="meal">Refeição</option>
                       <option value="dessert">Sobremesa</option>
@@ -114,17 +187,28 @@ export function New({ isAdmin }){
               </Section>
 
               <Section title="Preço" className="price">
-                <Input type="number" placeholder="R$ 00,00"/>
+                <Input 
+                  type="number" 
+                  placeholder="R$ 00,00"
+                  value={price}
+                  onChange={e => setPrice(e.target.value)}/>
               </Section>
             </Row>
 
             <Row>
               <Section title="Descrição" className="description">
-                <Textarea placeholder="Fale brevemente sobre o prato, seus ingredientes e composição" />
+                <Textarea 
+                  placeholder="Fale brevemente sobre o prato, seus ingredientes e composição" 
+                  onChange={e => setDescription(e.target.value)}
+                />
               </Section>
             </Row>
 
-            <Button isActive={false} title="Salvar alterações"/>
+            <Button 
+              isActive={false} 
+              title="Salvar alterações"
+              onClick={handleNewDish}
+            />
           </Form>
         </MainContent>
 
