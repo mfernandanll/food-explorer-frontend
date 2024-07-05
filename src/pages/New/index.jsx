@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 
 export function New({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState("");
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
@@ -24,6 +26,15 @@ export function New({ isAdmin }){
 
   function handleBack() {
     navigate(-1);
+  }
+
+  function handleRemoveTag(deleted) {
+    setTags((prevState) => prevState.filter((tag) => tag !== deleted));
+  }
+
+  function handleAddTag() {
+    setTags((prevState) => [...prevState, newTag]);
+    setNewTag("");
   }
 
   return (
@@ -82,12 +93,23 @@ export function New({ isAdmin }){
             <Row>
               <Section title="Ingredientes" className="ingredients">
                 <Ingredients>
-                  <FoodItem value="Pão Francês"/>
+                  {
+                    tags.map((tag, index) => (
+                      <FoodItem 
+                        key={String(index)}
+                        value={tag}
+                        onClick={() => handleRemoveTag(tag)}
+                      />
+                    ))
+                  }
+
                   <FoodItem 
-                    value="Adicionar" 
                     isNew 
                     placeholder="Adicionar"
-                  />
+                    onChange={(e) => setNewTag(e.target.value)}
+                    value={newTag} 
+                    onClick={handleAddTag}
+                  />                  
                 </Ingredients>
               </Section>
 
