@@ -6,14 +6,17 @@ import { Button } from "../Button";
 
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../hooks/auth";
 
 export function Header({ onOpenMenu, isAdmin }) {
+  const { signOut } = useAuth();
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   const navigate = useNavigate();
   
   function handleSignOut() {
     navigate("/");
+    signOut();
   }
 
   return (
