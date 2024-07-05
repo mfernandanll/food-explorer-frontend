@@ -3,9 +3,23 @@ import { Button, Container, Content, Header, Nav } from "./styles";
 import { Footer } from "../Footer";
 import { Search } from "../Search";
 import { useState } from "react";
+import { useAuth } from "../../hooks/auth";
+import { useNavigate } from "react-router-dom";
 
 export function SideMenu({ menuIsOpen, onCloseMenu }) {
   const [isAdmin, setIsAdmin] = useState(true);
+
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  function handleNew() {
+    navigate("/new");
+  }
+
+  function handleSignOut() {
+    navigate("/");
+    signOut();
+  }
 
   return (
     <Container data-menu-is-open={menuIsOpen}>
@@ -21,11 +35,11 @@ export function SideMenu({ menuIsOpen, onCloseMenu }) {
         <Search/>
         <Nav>
           {isAdmin && 
-            <a href="#">
-            Novo Prato
+            <a href="#" onClick={handleNew}>
+              Novo Prato
             </a>
           }
-          <a href="#">
+          <a href="#" onClick={handleSignOut}>
             Sair
           </a>
         </Nav>

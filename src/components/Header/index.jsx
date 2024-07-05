@@ -19,6 +19,10 @@ export function Header({ onOpenMenu, isAdmin }) {
     signOut();
   }
 
+  function handleNew() {
+    navigate("/new");
+  }
+
   return (
     <Container>
       <Menu onClick={onOpenMenu}>
@@ -39,11 +43,21 @@ export function Header({ onOpenMenu, isAdmin }) {
         </OrderIcon>
       }
 
-      <Button 
-        className="orders"
-        icon={Receipt}
-        title="Pedidos (0)"
-      />
+      {
+        isAdmin ? 
+        <Button 
+          className="orders"
+          title="Novo Prato"
+          onClick={handleNew}
+        />
+        : 
+        <Button 
+          className="orders"
+          icon={Receipt}
+          title="Pedidos (0)"
+        />
+
+      }
       
       <SignOutIcon onClick={handleSignOut}>
         <SignOut/>
