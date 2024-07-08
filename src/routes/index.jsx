@@ -1,12 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
 import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
-import { useState } from "react";
 import { useAuth } from "../hooks/auth";
 
 export function Routes() {
   const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(true);
+
+  let isAdmin = false;
+  if (user &&  user.role === "admin") {
+    isAdmin = true;
+  }
   
   return (
     <BrowserRouter>
