@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import { ButtonCounter, Container, Counter, DishDetails, FixedContent, HeadContent, MainContent, Order, Tags } from "./styles";
@@ -7,24 +7,35 @@ import { Header } from "../../components/Header";
 import { SideMenu } from "../../components/SideMenu";
 import { Footer } from "../../components/Footer";
 
-import dish1 from "../../assets/Dish1.png";
 import { Tag } from "../../components/Tag";
 import { Button } from "../../components/Button";
 import { ButtonText } from "../../components/ButtonText";
 import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { api } from "../../services/api";
 
 export function Details({ isAdmin }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [data, setData] = useState(null);
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
+  const params = useParams();
   const navigate = useNavigate();
 
   function handleBack() {
     navigate(-1);
   }
+
+  useEffect(() => {
+    async function fetchDish() {
+      const response = await api.get(`/dishes/${params.id}`);
+      setData(response.data);
+    }
+
+    fetchDish();
+  }, []);
 
   return (
     <Container>
@@ -41,50 +52,58 @@ export function Details({ isAdmin }) {
         <HeadContent>
           <ButtonText iconSize={32} title="voltar" onClick={handleBack}/>       
         </HeadContent>
+        {
+          data &&
 
-        <MainContent>   
+          <MainContent>   
 
-          <img src={dish1} alt="imagem do prato" />
-          
-          <DishDetails>
-            <h1>Salada Ravanello</h1>
-            <p>Rabanetes, folhas verdes e molho agridoce salpicados com gergelim.</p>
-
-            <Tags>
-              <Tag title="tomate" />
-              <Tag title="alface"/>
-              <Tag title="cebola"/>
-              <Tag title="couve"/>
-              <Tag title="páprica"/>
-            </Tags>
+            <img 
+              src={`${api.defaults.baseURL}/files/${data.image}`} 
+              alt="Imagem do prato." />
             
-              {
-                isAdmin ?
-                <Button 
-                  title="Editar prato" 
-                />
-                :
-                <Order>
-                  <Counter>
-                    <ButtonCounter>
-                      <Minus />
-                    </ButtonCounter>
+            <DishDetails>
+              <h1>{data.name}</h1>
+              <p>{data.description}</p>
 
-                    <span>01</span>
-
-                    <ButtonCounter>
-                      <Plus />
-                    </ButtonCounter>
-                  </Counter>
-                  <Button 
-                    icon={isDesktop ? null : Receipt}
-                    title={isDesktop ? "incluir - R$ 25,00" : "pedir - R$ 25,00"} 
+              <Tags>
+              { data.ingredients &&
+                data.ingredients.map(ingredient => (
+                  <Tag
+                   key={String(ingredient.id)}
+                   title={ingredient.name}
                   />
-                </Order>
+                ))
               }
+              </Tags>
+              
+                {
+                  isAdmin ?
+                  <Button 
+                    title="Editar prato" 
+                  />
+                  :
+                  <Order>
+                    <Counter>
+                      <ButtonCounter>
+                        <Minus />
+                      </ButtonCounter>
 
-          </DishDetails>
-        </MainContent>
+                      <span>01</span>
+
+                      <ButtonCounter>
+                        <Plus />
+                      </ButtonCounter>
+                    </Counter>
+                    <Button 
+                      icon={isDesktop ? null : Receipt}
+                      title={isDesktop ? `incluir - R$ ${data.price}` : `pedir - R$ ${data.price}`} 
+                    />
+                  </Order>
+                }
+
+            </DishDetails>
+          </MainContent>
+        }
 
         <Footer />
       </FixedContent>

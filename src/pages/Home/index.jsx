@@ -22,8 +22,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/navigation";
-// Swiper Required Module
-import { Navigation } from "swiper/modules";
 
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
@@ -46,7 +44,6 @@ export function Home({ isAdmin }) {
   const navigate = useNavigate();
 
   function handleDetails(id) {
-    console.log(id);
     navigate(`/details/${id}`);
   }
 
