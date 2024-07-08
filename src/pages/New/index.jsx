@@ -69,6 +69,12 @@ export function New({ isAdmin }){
       return alert("Informe ao menos um ingrediente do prato")
     }
 
+    if (newTag) {
+      return alert(
+        "Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio."
+      );
+    }
+
     if (!price) {
       return alert("Informe o preço do prato")
     }

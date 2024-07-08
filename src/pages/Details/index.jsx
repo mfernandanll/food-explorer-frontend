@@ -28,6 +28,10 @@ export function Details({ isAdmin }) {
     navigate(-1);
   }
 
+  function handleEdit() {
+    navigate(`/edit/${params.id}`);
+  }
+
   useEffect(() => {
     async function fetchDish() {
       const response = await api.get(`/dishes/${params.id}`);
@@ -80,6 +84,7 @@ export function Details({ isAdmin }) {
                   isAdmin ?
                   <Button 
                     title="Editar prato" 
+                    onClick={handleEdit}
                   />
                   :
                   <Order>

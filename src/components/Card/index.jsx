@@ -13,7 +13,7 @@ export function Card({ data, isAdmin, handleDetails }) {
   const navigate = useNavigate();
 
   function handleEdit() {
-    navigate(`/edit/4`);
+    navigate(`/edit/${data.id}`);
   }
 
   return (
