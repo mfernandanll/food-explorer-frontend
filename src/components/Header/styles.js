@@ -16,6 +16,10 @@ export const Container = styled.div`
     display: none;
 
     width: 13.5rem;
+    > svg {
+      width: 1.5rem;
+      height: 1.125rem;
+    }
 
     @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
       display: flex;
@@ -43,8 +47,7 @@ export const Menu = styled.button`
   color: ${({ theme }) => theme.COLORS.WHITE};
   
   > svg {
-    width: 1.5rem;
-    height: 1.125rem;
+    font-size: 2rem;
     color: ${({theme}) => theme.COLORS.LIGHT_100};
   }
 
@@ -107,7 +110,7 @@ export const OrderIcon = styled.button`
 
   
   > svg {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   > span {

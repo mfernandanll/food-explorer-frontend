@@ -38,7 +38,7 @@ export function SignUp(){
   return (
     <Container>
       <Content>
-        <Logo />
+        <Logo size="lg"/>
         <Formfield>
           <Form>
             <h1>Crie sua conta</h1>

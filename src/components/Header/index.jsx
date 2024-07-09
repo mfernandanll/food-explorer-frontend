@@ -42,7 +42,7 @@ export function Header({
             <List className="fi-menu-icon" onClick={() => setIsMenuOpen(true)} />
           ) : (
             <>
-              <X size={"1.125rem"} onClick={() => setIsMenuOpen(false)} />
+              <X size={"1.5rem"} onClick={() => setIsMenuOpen(false)} />
               <span>Menu</span>
             </>
           )}

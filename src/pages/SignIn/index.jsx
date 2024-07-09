@@ -31,7 +31,7 @@ export function SignIn(){
   return (
     <Container>
       <Content>
-        <Logo />
+        <Logo size="lg"/>
         <Formfield>
           <Form>
             <h1>Faça login</h1>
