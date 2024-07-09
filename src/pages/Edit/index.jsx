@@ -127,10 +127,18 @@ export function Edit({ isAdmin }){
     if (confirm) {
       setLoading(true);
 
-      await api.delete(`/dishes/${params.id}`);
-      navigate(-1);
-
-      setLoading(false);
+      try {
+        await api.delete(`/dishes/${params.id}`);
+        navigate("/");
+      } catch (error) {
+        if (error.response) {
+          alert(error.response.data.message);
+        } else {
+          alert("Não foi possível excluir o prato.");
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
