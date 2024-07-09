@@ -19,6 +19,7 @@ import bannerImage from "../../assets/banner-image.png";
 import bannerImageMobile from "../../assets/banner-image-mobile.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -99,13 +100,14 @@ export function Home({ isAdmin }) {
             <p>Refeições</p>
 
             <Swiper
-              key={isDesktop}
+              key="1"
               ref={swiperElRef1}
               spaceBetween={isDesktop ? "27" : "16"}
               navigation={isDesktop ? true : false}
               grabCursor={true}
               loop={true}
               loopAddBlankSlides={true}
+              modules={[Navigation]}
               breakpoints={{
                 320: {
                   slidesPerView: 2,
@@ -129,13 +131,14 @@ export function Home({ isAdmin }) {
             <p>Sobremesas</p>
 
             <Swiper
-              key={isDesktop}
-              ref={swiperElRef1}
+              key="2"
+              ref={swiperElRef2}
               spaceBetween={isDesktop ? "27" : "16"}
               navigation={isDesktop ? true : false}
               grabCursor={true}
               loop={true}
               loopAddBlankSlides={true}
+              modules={[Navigation]}
               breakpoints={{
                 320: {
                   slidesPerView: 2,
@@ -159,13 +162,14 @@ export function Home({ isAdmin }) {
             <p>Bebidas</p>
 
             <Swiper
-              key={isDesktop}
-              ref={swiperElRef1}
+              key="3"
+              ref={swiperElRef3}
               spaceBetween={isDesktop ? "27" : "16"}
               navigation={isDesktop ? true : false}
               grabCursor={true}
               loop={true}
               loopAddBlankSlides={true}
+              modules={[Navigation]}
               breakpoints={{
                 320: {
                   slidesPerView: 2,
