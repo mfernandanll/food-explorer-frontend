@@ -35,14 +35,30 @@ export const Container = styled.div`
 export const Menu = styled.button`
   background: none;
   border: none;
-  display: none;
+
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+
+  color: ${({ theme }) => theme.COLORS.WHITE};
   
   > svg {
-    font-size: 2.5rem;
+    width: 1.5rem;
+    height: 1.125rem;
     color: ${({theme}) => theme.COLORS.LIGHT_100};
   }
 
-  @media (max-width: ${DEVICE_BREAKPOINTS.MD}) {
+  span {
+    font-size: 1.313rem;
+    color: ${({theme}) => theme.COLORS.LIGHT_100};
+  }
+
+  /* > svg {
+    font-size: 2.5rem;
+    color: ${({theme}) => theme.COLORS.LIGHT_100};
+  } */
+
+  /* @media (max-width: ${DEVICE_BREAKPOINTS.MD}) {
     display: block;
   }
 
@@ -54,7 +70,7 @@ export const Menu = styled.button`
 
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
     display: none;
-  }
+  } */
 `;
 
 export const HeaderSerachArea = styled.div`

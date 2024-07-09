@@ -2,36 +2,31 @@ import styled from 'styled-components'
 import { DEVICE_BREAKPOINTS } from "../../styles/deviceBreakpoints";
 
 export const Container = styled.aside`
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+
   background-color: ${({ theme }) => theme.COLORS.DARK_400};
   width: 100%;
 
   display: flex;
   flex-direction: column;
-  display: none;
 
-  @media (max-width: ${DEVICE_BREAKPOINTS.MD}) {
-    display: block;
-    position: absolute;
-    z-index: 1;
 
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+  /* display: grid;
+  grid-template-rows: 7.125rem auto 4.813rem;
+  grid-template-areas:
+    "header"
+    "content"
+    "footer"; */
 
-    &[data-menu-is-open="true"] {
-      transform: translateX(0);
-    }
-  }
+
+  visibility: ${({ $isMenuOpen }) => ($isMenuOpen ? "visible" : "hidden")};
+  opacity: ${({ $isMenuOpen }) => ($isMenuOpen ? "1" : "0")};
+  transition: opacity 0.3s ease-out;
 `
 
-export const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-
-  height: 7.125rem;
-  
-  padding: 1.75rem;
-  background: ${({theme}) => theme.COLORS.DARK_700};
-`;
 
 export const Content = styled.div`
   padding: 1.75rem;
@@ -40,6 +35,10 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.25rem;
+
+  /* grid-area: content;
+  justify-self: center; */
+  
 `
 
 export const Button = styled.button`

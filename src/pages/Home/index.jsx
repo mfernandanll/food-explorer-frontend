@@ -31,7 +31,7 @@ export function Home({ isAdmin }) {
   const swiperElRef2 = useRef(null);
   const swiperElRef3 = useRef(null);
 
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [dishes, setDishes] = useState({
     meals: [],
@@ -39,7 +39,7 @@ export function Home({ isAdmin }) {
     beverages: [],
   });
 
-  const isDesktop = useMediaQuery({ minWidth: 768 });
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   const navigate = useNavigate();
 
@@ -66,17 +66,24 @@ export function Home({ isAdmin }) {
 
   return (
     <Container>
-      <SideMenu
-        menuIsOpen={menuIsOpen}
-        onCloseMenu={() => setMenuIsOpen(false)}
-        setSearch={setSearch}
-      />
-      <FixedContent>
-        <Header
-          onOpenMenu={() => setMenuIsOpen(true)}
+      {
+        !isDesktop &&
+        <SideMenu
           isAdmin={isAdmin}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen} 
           setSearch={setSearch}
         />
+      }
+
+      <FixedContent>
+        <Header
+          isAdmin={isAdmin}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen} 
+          setSearch={setSearch}
+        />
+        
         <MainContent>
           <Banner>
             <img
