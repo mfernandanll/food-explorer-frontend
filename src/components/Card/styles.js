@@ -18,7 +18,7 @@ export const Container = styled.div`
   max-width: 13.125rem;
   height: 18.25rem;
 
-  border-radius: 8px;
+  border-radius: 0.5rem;
 
   > img {
     max-width: 5.5rem;

@@ -12,7 +12,7 @@ export const Container = styled.button`
   font-size: 0.875rem;
 
   border: none;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   background-color: ${({ theme }) => theme.COLORS.TOMATO_100 };
   color: ${({ theme }) => theme.COLORS.LIGHT_100 };
 `

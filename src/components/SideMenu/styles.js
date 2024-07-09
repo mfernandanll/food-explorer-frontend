@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { DEVICE_BREAKPOINTS } from "../../styles/deviceBreakpoints";
 
 export const Container = styled.aside`
   position: fixed;
@@ -13,20 +12,10 @@ export const Container = styled.aside`
   display: flex;
   flex-direction: column;
 
-
-  /* display: grid;
-  grid-template-rows: 7.125rem auto 4.813rem;
-  grid-template-areas:
-    "header"
-    "content"
-    "footer"; */
-
-
   visibility: ${({ $isMenuOpen }) => ($isMenuOpen ? "visible" : "hidden")};
   opacity: ${({ $isMenuOpen }) => ($isMenuOpen ? "1" : "0")};
   transition: opacity 0.3s ease-out;
 `
-
 
 export const Content = styled.div`
   padding: 1.75rem;
@@ -34,18 +23,14 @@ export const Content = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
-
-  /* grid-area: content;
-  justify-self: center; */
-  
+  gap: 2.25rem;  
 `
 
 export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 0.313rem;
   
   background-color: transparent;
   border: none;
@@ -56,7 +41,7 @@ export const Button = styled.button`
   }
 
   > svg {
-    font-size: 20px;
+    font-size: 1.25rem;
     color: ${({ theme }) => theme.COLORS.LIGHT_100};
   }
 `;

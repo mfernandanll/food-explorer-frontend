@@ -19,7 +19,7 @@ export const Container = styled.div`
   outline: ${({ theme, $isNew }) =>
     $isNew ? `1px dashed ${theme.COLORS.LIGHT_500}` : "none"};
 
-  border-radius: 8px;
+  border-radius: 0.5rem;
 
   > input {
     background: transparent;

@@ -80,7 +80,7 @@ export const Row = styled.div`
   > section > div > input {
     background-color: ${({ theme }) => theme.COLORS.DARK_800};
     color: ${({ theme }) => theme.COLORS.LIGHT_100};
-    border-radius: 8px;
+    border-radius: 0.5rem;
   }
   
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
@@ -132,7 +132,7 @@ export const Image = styled.div`
   position: relative;
 
   background-color: ${({ theme }) => theme.COLORS.DARK_800};
-  border-radius: 8px;
+  border-radius: 0.5rem;
 
   padding: 0.75rem 2rem;
 
@@ -157,7 +157,7 @@ export const Image = styled.div`
 export const Category = styled.div`
   background-color: ${({ theme }) => theme.COLORS.DARK_900};
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   
   > label {
     position: relative;
@@ -212,5 +212,5 @@ export const Ingredients = styled.div`
   background-color: ${({ theme }) => theme.COLORS.DARK_800};
   padding: 0.5rem;
 
-  border-radius: 8px;
+  border-radius: 0.5rem;
 `

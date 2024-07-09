@@ -9,7 +9,6 @@ export function FoodItem({value, isNew, onClick, ...rest}) {
       <button
         type="button"
         onClick={onClick}
-        // className={isNew ? "button-add" : "button-delete"}
       >
         {isNew ? <Plus /> : <Minus />}
       </button>

@@ -4,13 +4,11 @@ export const Container = styled.div`
   width: 100%;
   height: 3rem;
   
-
   display: flex;
   align-items: center;
   gap: 1rem;
 
-  border-radius: 8px;
-  /* background: ${({theme}) => theme.COLORS.DARK_900}; */
+  border-radius: 0.5rem;
   background: transparent;
 
   > input {

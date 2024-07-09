@@ -101,7 +101,7 @@ export const OrderIcon = styled.button`
     top: -0.25rem;
     right: -0.375rem;
 
-    border-radius: 99px;
+    border-radius: 6.188rem;
     padding-inline: 0.375rem;
   }
 
