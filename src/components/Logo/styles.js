@@ -21,7 +21,9 @@ export const Container = styled.div`
   }
 
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
+    align-items: flex-end;
     flex-direction: column;
+    flex-grow: 0;
     gap: 0;
   }
 `
