@@ -19,21 +19,6 @@ export const Content = styled.div`
   flex-direction: column;
   gap: 4.563rem;
 
-  animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
-
-  @keyframes puff-in-center {
-      0% {
-          transform: scale(2);
-          filter: blur(4px);
-          opacity: 0;
-      }
-      100% {
-          transform: scale(1);
-          filter: blur(0px);
-          opacity: 1;
-      }
-  }
-
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
     flex-direction: row;
     align-items: center;
