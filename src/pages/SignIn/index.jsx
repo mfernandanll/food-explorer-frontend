@@ -10,11 +10,22 @@ import { useState } from "react";
 export function SignIn(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { signIn } = useAuth();
   
   function handleSignIn() {
-    signIn({ email, password });
+    if (!email) {
+      return alert("Digite seu e-mail")
+    }
+
+    if (!password) {
+      return alert("Digite sua senha")
+    }
+
+    setLoading(true);
+
+    signIn({ email, password }).finally(() => setLoading(false));
   }
 
   return (
@@ -41,6 +52,7 @@ export function SignIn(){
 
             <Button
               title="Entrar"
+              loading={loading}
               onClick={handleSignIn}
             />
             

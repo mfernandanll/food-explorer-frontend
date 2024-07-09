@@ -17,6 +17,7 @@ import { api } from "../../services/api";
 
 export function Edit({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
@@ -30,6 +31,7 @@ export function Edit({ isAdmin }){
   const [fileName, setFileName] = useState("");
 
   const [dish, setDish] = useState(null);
+
 
   const navigate = useNavigate();
   const params = useParams();
@@ -84,6 +86,8 @@ export function Edit({ isAdmin }){
       return alert("Digite a descrição do prato")
     }
 
+    setLoading(true);
+
     try {
       const updatedDish = {
         name,
@@ -112,6 +116,8 @@ export function Edit({ isAdmin }){
       } else {
         alert("Não foi possível atualizar o prato.");
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -119,8 +125,12 @@ export function Edit({ isAdmin }){
     const confirm = window.confirm("Você tem certeza que deseja excluir esse prato?");
 
     if (confirm) {
+      setLoading(true);
+
       await api.delete(`/dishes/${params.id}`);
       navigate(-1);
+
+      setLoading(false);
     }
   }
 
@@ -191,7 +201,7 @@ export function Edit({ isAdmin }){
               <Section title="Nome" className="name">
                 <Input 
                   type="text" 
-                  // placeholder="Salada Ceasar"
+                  placeholder="Salada Ceasar"
                   value={name}
                   onChange={e => setName(e.target.value)}
                 />
@@ -243,7 +253,7 @@ export function Edit({ isAdmin }){
               <Section title="Preço" className="price">
                 <Input 
                   type="number" 
-                  // placeholder="R$ 40,00"
+                  placeholder="R$ 40,00"
                   value={price}
                   onChange={e => setPrice(e.target.value)}
                 />
@@ -253,7 +263,7 @@ export function Edit({ isAdmin }){
             <Row>
               <Section title="Descrição" className="description">
                 <Textarea 
-                  // placeholder="A Salada César é uma opção refrescante para o verão."
+                  placeholder="A Salada César é uma opção refrescante para o verão."
                   defaultValue={description}
                   onChange={e => setDescription(e.target.value)}
                 />
@@ -263,13 +273,13 @@ export function Edit({ isAdmin }){
             <ButtonsRow>
               <Button 
                 className="delete" 
-                isActive 
                 title="Excluir prato"
+                loading={loading} 
                 onClick={handleRemoveDish}
               />
               <Button 
-                isActive={false} 
                 title="Salvar alterações"
+                loading={loading} 
                 onClick={handleEditDish}
               />
             </ButtonsRow>

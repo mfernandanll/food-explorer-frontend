@@ -13,6 +13,6 @@ export const Container = styled.button`
 
   border: none;
   border-radius: 5px;
-  background-color: ${({ theme, $isActive }) => $isActive ? theme.COLORS.TOMATO_100 : theme.COLORS.TOMATO_400};
+  background-color: ${({ theme }) => theme.COLORS.TOMATO_100 };
   color: ${({ theme }) => theme.COLORS.LIGHT_100 };
 `

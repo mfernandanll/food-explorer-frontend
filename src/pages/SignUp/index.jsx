@@ -11,6 +11,7 @@ export function SignUp(){
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,6 +19,8 @@ export function SignUp(){
     if (!name || !email || !password) {
       return alert("Preencha todos os campos!");
     }
+
+    setLoading(true);
 
     api.post("/users", {name, email, password})
        .then(() => {
@@ -29,7 +32,7 @@ export function SignUp(){
           } else {
             alert("Não foi possível cadastrar");
           }
-       })
+       }).finally(() => setLoading(false));
   }
 
   return (
@@ -63,6 +66,7 @@ export function SignUp(){
 
             <Button
               title="Criar conta"
+              loading={loading}
               onClick={handleSignUp}
             />
 

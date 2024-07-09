@@ -18,6 +18,8 @@ import { api } from "../../services/api";
 
 export function New({ isAdmin }){
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   
@@ -83,6 +85,8 @@ export function New({ isAdmin }){
       return alert("Digite a descrição do prato")
     }
 
+    setLoading(true);
+
     const formdata = new FormData();
     formdata.append("image", image);
     formdata.append("name", name);
@@ -101,8 +105,10 @@ export function New({ isAdmin }){
       } else {
         alert("Não foi possível cadastrar");
       }
+    } finally {
+      setLoading(false);
     }
-  }
+  } 
 
   return (
     <Container>
@@ -211,8 +217,8 @@ export function New({ isAdmin }){
             </Row>
 
             <Button 
-              isActive={false} 
               title="Salvar alterações"
+              loading={loading}
               onClick={handleNewDish}
             />
           </Form>
