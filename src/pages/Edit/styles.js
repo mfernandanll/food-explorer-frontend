@@ -101,6 +101,11 @@ export const Row = styled.div`
 
     .ingredients {
       flex-grow: 9;
+      max-width: 52.31rem;
+    }
+
+    .price {
+      min-width: 18rem;
     }
   }
 `
@@ -203,7 +208,6 @@ export const Ingredients = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  flex-grow: 8;
 
   background-color: ${({ theme }) => theme.COLORS.DARK_800};
   padding: 0.5rem;

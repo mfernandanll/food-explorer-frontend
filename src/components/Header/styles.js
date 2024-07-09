@@ -55,25 +55,6 @@ export const Menu = styled.button`
     font-size: 1.313rem;
     color: ${({theme}) => theme.COLORS.LIGHT_100};
   }
-
-  /* > svg {
-    font-size: 2.5rem;
-    color: ${({theme}) => theme.COLORS.LIGHT_100};
-  } */
-
-  /* @media (max-width: ${DEVICE_BREAKPOINTS.MD}) {
-    display: block;
-  }
-
-  @media (max-width: ${DEVICE_BREAKPOINTS.XS}) {
-    > svg {
-      font-size: 2rem;
-    }
-  }
-
-  @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
-    display: none;
-  } */
 `;
 
 export const HeaderSerachArea = styled.div`
