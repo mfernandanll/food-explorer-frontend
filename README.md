@@ -37,7 +37,7 @@ A aplicação conta com as seguintes páginas:
 - Novo prato
 - Editar prato
 
-!["Página home"](./src/assets/home.png)
+!["Página home"](./src/assets/homepage.png)
 
 <h2 id="features">🛠️ Funcionalidades</h2>
 
