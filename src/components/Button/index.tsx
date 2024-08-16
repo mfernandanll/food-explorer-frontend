@@ -4,7 +4,7 @@ import { Icon } from "@phosphor-icons/react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLElement>{
   title: string;
-  icon?: Icon;
+  icon?: Icon | null;
   loading?: boolean;
 }
 

@@ -31,17 +31,23 @@ interface HomeProps {
   isAdmin: boolean;
 }
 
-interface Dish {
+export interface Dish {
   id: string;
   name: string;
   description: string;
   category: 'meal' | 'dessert' | 'beverage';
   price: number;
+  ingredients: Ingredient[];
   image?: string;
   createdBy: string;
   updatedBy: string;
   createdAt: string;
   updatedAt: string;
+}
+
+interface Ingredient {
+  id: string;
+  name: string;
 }
 
 interface FormattedDishes {

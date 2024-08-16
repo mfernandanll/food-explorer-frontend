@@ -14,10 +14,15 @@ import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from "../../services/api";
+import { Dish } from "../Home";
 
-export function Details({ isAdmin }) {
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [data, setData] = useState(null);
+interface DetailsProps {
+  isAdmin: boolean;
+}
+
+export function Details({ isAdmin }: DetailsProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [data, setData] = useState<Dish>();
 
   const isDesktop = useMediaQuery({ minWidth: 768 });
 
@@ -44,13 +49,16 @@ export function Details({ isAdmin }) {
   return (
     <Container>
       <SideMenu
-        menuIsOpen={menuIsOpen}
-        onCloseMenu={() => setMenuIsOpen(false)}
+        isAdmin={isAdmin}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen} 
       />
+
       <FixedContent>
         <Header 
-          onOpenMenu={() => setMenuIsOpen(true)} 
-          isAdmin={isAdmin} 
+          isAdmin={isAdmin}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen} 
         />
         
         <HeadContent>
@@ -60,7 +68,6 @@ export function Details({ isAdmin }) {
           data &&
 
           <MainContent>   
-
             <img 
               src={`${api.defaults.baseURL}/files/${data.image}`} 
               alt="Imagem do prato." />

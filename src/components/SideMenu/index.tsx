@@ -9,7 +9,7 @@ interface SideMenuProps {
   isAdmin: boolean; 
   isMenuOpen: boolean; 
   setIsMenuOpen: (value: boolean) => void;
-  setSearch: (value: string) => void;
+  setSearch?: (value: string) => void;
 }
 
 export function SideMenu({ isAdmin, isMenuOpen, setIsMenuOpen, setSearch }: SideMenuProps) {
