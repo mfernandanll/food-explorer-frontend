@@ -5,7 +5,7 @@ import { New } from "../pages/New";
 import { Edit } from "../pages/Edit";
 import { Details } from "../pages/Details";
 
-export function AppRoutes({ isAdmin }) {
+export function AppRoutes({ isAdmin = false }) {
   return (
     <Routes>
       <Route path="/" element={<Home isAdmin={isAdmin} />} />

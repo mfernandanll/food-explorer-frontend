@@ -1,14 +1,39 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 
-export const AuthContext = createContext({});
+interface AuthContextType {
+  signIn: (name: string, password: string) => Promise<void>,
+  signOut: () => void,
+  user: User;
+}
 
-function AuthProvider({ children }) {
-  const [data, setData] = useState({});
+export const AuthContext = createContext({} as AuthContextType);
 
-  async function signIn({ email, password }) {
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: 'customer' | 'admin';
+  created_at: string;
+  updated_at: string;
+}
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+interface UserInfo {
+  token: string;
+  user: User;
+}
+
+function AuthProvider({ children }: AuthProviderProps) {
+  const [data, setData] = useState<UserInfo>({} as UserInfo);
+
+  async function signIn( email: string, password: string ) {
     try {
-      const response = await api.post("sessions", { email, password });
+      const response = await api.post<UserInfo>("sessions", { email, password });
       const { token, user } = response.data;
 
       localStorage.setItem("@foodexplorer:user", JSON.stringify(user));
@@ -17,9 +42,9 @@ function AuthProvider({ children }) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setData({ token, user });
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && error.response) {
+        alert((error.response as any).data.message);
       } else {
         alert("Não foi possível entrar.");
       }
@@ -30,7 +55,7 @@ function AuthProvider({ children }) {
     localStorage.removeItem("@foodexplorer:token");
     localStorage.removeItem("@foodexplorer:user");
 
-    setData({});
+    setData({} as UserInfo);
   }
 
   useEffect(() => {

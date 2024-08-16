@@ -25,7 +25,7 @@ export function SignIn(){
 
     setLoading(true);
 
-    signIn({ email, password }).finally(() => setLoading(false));
+    signIn( email, password ).finally(() => setLoading(false));
   }
 
   return (
