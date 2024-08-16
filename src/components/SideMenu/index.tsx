@@ -5,7 +5,14 @@ import { useAuth } from "../../hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../Header";
 
-export function SideMenu({ isAdmin, isMenuOpen, setIsMenuOpen, onCloseMenu, setSearch }) {
+interface SideMenuProps {
+  isAdmin: boolean; 
+  isMenuOpen: boolean; 
+  setIsMenuOpen: (value: boolean) => void;
+  setSearch: (value: string) => void;
+}
+
+export function SideMenu({ isAdmin, isMenuOpen, setIsMenuOpen, setSearch }: SideMenuProps) {
   const { signOut } = useAuth();
   const navigate = useNavigate();
 

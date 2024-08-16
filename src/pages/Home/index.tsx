@@ -27,30 +27,49 @@ import "swiper/css/navigation";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
-export function Home({ isAdmin }) {
+interface HomeProps {
+  isAdmin: boolean;
+}
+
+interface Dish {
+  id: string;
+  name: string;
+  description: string;
+  category: 'meal' | 'dessert' | 'beverage';
+  price: number;
+  image?: string;
+  createdBy: string;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface FormattedDishes {
+  meals: Dish[];
+  desserts: Dish[];
+  beverages: Dish[];
+}
+
+export function Home({ isAdmin }: HomeProps) {
   const swiperElRef1 = useRef(null);
   const swiperElRef2 = useRef(null);
   const swiperElRef3 = useRef(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [dishes, setDishes] = useState({
-    meals: [],
-    desserts: [],
-    beverages: [],
-  });
+  const [dishes, setDishes] = useState<FormattedDishes>({} as FormattedDishes);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   const navigate = useNavigate();
 
-  function handleDetails(id) {
+  function handleDetails(id: string) {
     navigate(`/details/${id}`);
   }
 
   useEffect(() => {
     async function fetchDishes() {
-      const response = await api.get(`/dishes?search=${search}`);
+      const response = await api.get<Dish[]>(`/dishes?search=${search}`);      
       const meals = response.data.filter((dish) => dish.category === "meal");
       const desserts = response.data.filter(
         (dish) => dish.category === "dessert"
@@ -58,7 +77,7 @@ export function Home({ isAdmin }) {
       const beverages = response.data.filter(
         (dish) => dish.category === "beverage"
       );
-
+      
       setDishes({ meals, desserts, beverages });
     }
 
@@ -117,7 +136,7 @@ export function Home({ isAdmin }) {
                 },
               }}
             >
-              {dishes.meals.map((dish) => (
+              {dishes.meals && dishes.meals.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
                     isAdmin={isAdmin}
@@ -148,7 +167,7 @@ export function Home({ isAdmin }) {
                 },
               }}
             >
-              {dishes.desserts.map((dish) => (
+              {dishes.desserts && dishes.desserts.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
                     isAdmin={isAdmin}
@@ -179,7 +198,7 @@ export function Home({ isAdmin }) {
                 },
               }}
             >
-              {dishes.beverages.map((dish) => (
+              {dishes.beverages && dishes.beverages.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
                     isAdmin={isAdmin}

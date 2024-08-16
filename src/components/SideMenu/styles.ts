@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const Container = styled.aside`
+interface ContainerProps {
+  $isMenuOpen: boolean;
+}
+
+export const Container = styled.aside<ContainerProps>`
   position: fixed;
   width: 100%;
   height: 100vh;
