@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { DEVICE_BREAKPOINTS } from '../../styles/deviceBreakpoints';
-import  Logo_polygon  from "../../assets/logo_polygon.svg";
+import  Logo_polygon  from "../../assets/logo_polygon.svg?react";
 
 interface BaseProps {
   $size: 'sm' | 'md' | 'lg';
