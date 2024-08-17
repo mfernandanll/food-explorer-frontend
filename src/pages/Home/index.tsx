@@ -62,7 +62,7 @@ export function Home({ isAdmin }: HomeProps) {
   const swiperElRef3 = useRef(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const [dishes, setDishes] = useState<FormattedDishes>({} as FormattedDishes);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
