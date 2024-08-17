@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
 import { Section } from "../../components/Section";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { api } from "../../services/api";
 
 export function SignUp(){
@@ -46,21 +46,21 @@ export function SignUp(){
             <Section title="Seu nome" className="inputs">
               <Input
                 placeholder="Exemplo: Maria da Silva"
-                onChange={e => setName(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               />
             </Section>
 
             <Section title="Email" className="inputs">
               <Input
                 placeholder="Exemplo: exemplo@exemplo.com.br"
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               />
             </Section>
 
             <Section title="Senha" className="inputs">
               <Input
                 placeholder="No mínimo 6 caracteres"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               />
             </Section>
 

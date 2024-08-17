@@ -5,7 +5,7 @@ import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
 import { Section } from "../../components/Section";
 import { useAuth } from "../../hooks/auth";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export function SignIn(){
   const [email, setEmail] = useState("");
@@ -39,14 +39,14 @@ export function SignIn(){
             <Section title="Email" className="inputs">
               <Input
                 placeholder="Exemplo: exemplo@exemplo.com.br"
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               />
             </Section>
 
             <Section title="Senha" className="inputs">
               <Input
                 placeholder="No mínimo 6 caracteres"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
               />
             </Section>
 

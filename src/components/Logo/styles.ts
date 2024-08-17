@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import { DEVICE_BREAKPOINTS } from '../../styles/deviceBreakpoints';
-import  Logo_polygon  from "../../assets/logo_polygon.svg?react";
+import  Logo_polygon  from "../../assets/logo_polygon.svg";
 
-export const Container = styled.div`
+interface BaseProps {
+  $size: 'sm' | 'md' | 'lg';
+}
+
+export const Container = styled.div<BaseProps>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -28,7 +32,7 @@ export const Container = styled.div`
   }
 `
 
-export const Brand = styled.div`
+export const Brand = styled.div<BaseProps>`
   display: flex;
   align-items: center;
   justify-content: ${({ $size }) => $size === "sm" ? "start" : "center"};
@@ -46,7 +50,7 @@ export const Brand = styled.div`
   }
 `
 
-export const LogoIcon = styled(Logo_polygon)`
+export const LogoIcon = styled(Logo_polygon)<BaseProps>`
   width: ${({ $size }) => $size === "sm" ? '1.15rem' 
           : $size === "md" ? '1.5rem'
           : '2.32rem'};

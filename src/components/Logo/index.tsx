@@ -1,7 +1,12 @@
 
 import { Brand, Container, LogoIcon } from "./styles";
 
-export function Logo({size, isAdmin}) {
+interface LogoProps {
+  size: 'sm' | 'md' | 'lg';
+  isAdmin?: boolean;
+}
+
+export function Logo({size, isAdmin = false}: LogoProps) {
   return (
     <Container $size={size}>
       <Brand $size={size}>
