@@ -38,7 +38,7 @@ export interface Dish {
   category: 'meal' | 'dessert' | 'beverage';
   price: number;
   ingredients: Ingredient[];
-  image?: string;
+  image: string | null;
   createdBy: string;
   updatedBy: string;
   createdAt: string;

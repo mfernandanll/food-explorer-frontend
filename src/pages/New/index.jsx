@@ -123,7 +123,7 @@ export function New({ isAdmin }){
         />
         
         <HeadContent>
-          <ButtonText title="voltar" iconSize={22} onClick={handleBack}/>       
+          <ButtonText title="voltar" iconSize={22} onClickCapture={handleBack}/>       
         </HeadContent>
 
         <MainContent>   

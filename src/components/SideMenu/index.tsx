@@ -33,11 +33,11 @@ export function SideMenu({ isAdmin, isMenuOpen, setIsMenuOpen, setSearch }: Side
         <Search setSearch={setSearch}/>
         <Nav>
           {isAdmin && 
-            <a href="#" onClick={handleNew}>
+            <a href="#" onClickCapture={handleNew}>
               Novo Prato
             </a>
           }
-          <a href="#" onClick={handleSignOut}>
+          <a href="#" onClickCapture={handleSignOut}>
             Sair
           </a>
         </Nav>

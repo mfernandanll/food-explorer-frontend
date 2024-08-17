@@ -46,10 +46,10 @@ export function Header({
       {!isDesktop && (
         <Menu>
           {!isMenuOpen ? (
-            <List className="fi-menu-icon" onClick={() => setIsMenuOpen(true)} />
+            <List className="fi-menu-icon" onClickCapture={() => setIsMenuOpen(true)} />
           ) : (
             <>
-              <X size={"1.5rem"} onClick={() => setIsMenuOpen(false)} />
+              <X size={"1.5rem"} onClickCapture={() => setIsMenuOpen(false)} />
               <span>Menu</span>
             </>
           )}
@@ -77,7 +77,7 @@ export function Header({
             <Button className="orders" icon={Receipt} title="Pedidos (0)" />
           )}
 
-          <SignOutIcon onClick={handleSignOut}>
+          <SignOutIcon onClickCapture={handleSignOut}>
             <SignOut />
           </SignOutIcon>
         </>

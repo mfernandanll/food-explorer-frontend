@@ -6,12 +6,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLElement>{
   title: string;
   icon?: Icon | null;
   loading?: boolean;
+  onClick?: () => void;
 }
 
-export function Button({icon: Icon, title, loading = false, ...rest}: ButtonProps){
+export function Button({icon: Icon, title, loading = false, onClick, ...rest}: ButtonProps){
   return (
     <Container 
       type="button"
+      onClickCapture={onClick}
       disabled={loading} 
       {...rest}
     >

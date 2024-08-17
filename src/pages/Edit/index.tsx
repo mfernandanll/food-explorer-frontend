@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row, ButtonsRow } from "./styles";
 
 import { ButtonText } from "../../components/ButtonText";
@@ -14,24 +14,28 @@ import { Textarea } from "../../components/Textarea";
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../services/api";
+import { Dish } from "../Home";
 
-export function Edit({ isAdmin }){
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+interface EditProps {
+  isAdmin: boolean;
+}
+
+export function Edit({ isAdmin }: EditProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
-  
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-	const [description, setDescription] = useState("");
+  const [price, setPrice] = useState<number>(0);
+  const [description, setDescription] = useState("");
 
-  const [image, setImage] = useState(null);
-  const [fileName, setFileName] = useState("");
+  const [image, setImage] = useState<File | null | string>(null);
+  const [fileName, setFileName] = useState<string>("");
 
-  const [dish, setDish] = useState(null);
-
+  const [dish, setDish] = useState<Dish | null>(null);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -40,7 +44,7 @@ export function Edit({ isAdmin }){
     navigate(-1);
   }
 
-  function handleRemoveTag(deleted) {
+  function handleRemoveTag(deleted: string) {
     setTags((prevState) => prevState.filter((tag) => tag !== deleted));
   }
 
@@ -49,10 +53,13 @@ export function Edit({ isAdmin }){
     setNewTag("");
   }
 
-  function handleImageChange(e) {
-    const file = e.target.files[0];
-    setImage(file);
-    setFileName(file.name);
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setImage(file);
+      setFileName(file.name);
+    }
   }
 
   async function handleEditDish() {
@@ -110,9 +117,9 @@ export function Edit({ isAdmin }){
       alert("Prato atualizado com sucesso!");
       navigate("/");
 
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && error.response) {
+        alert((error.response as any).data.message);
       } else {
         alert("Não foi possível atualizar o prato.");
       }
@@ -130,9 +137,9 @@ export function Edit({ isAdmin }){
       try {
         await api.delete(`/dishes/${params.id}`);
         navigate("/");
-      } catch (error) {
-        if (error.response) {
-          alert(error.response.data.message);
+      } catch (error: unknown) {
+        if (error instanceof Error && 'response' in error && error.response) {
+          alert((error.response as any).data.message);
         } else {
           alert("Não foi possível excluir o prato.");
         }
@@ -153,11 +160,12 @@ export function Edit({ isAdmin }){
     }
 
     fetchDish();
+    
   }, [params.id])
 
   useEffect(() => {
-    if (dish) {
-      setFileName(dish.image);
+    if (dish) {      
+      setFileName(dish.image ?? '');
       setImage(dish.image);
       setName(dish.name);
       setCategory(dish.category);
@@ -172,20 +180,22 @@ export function Edit({ isAdmin }){
   return (
     <Container>
       <SideMenu
-        menuIsOpen={menuIsOpen}
-        onCloseMenu={() => setMenuIsOpen(false)}
+        isAdmin={isAdmin}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen} 
       />
       <FixedContent>
-        <Header 
-          onOpenMenu={() => setMenuIsOpen(true)} 
-          isAdmin={isAdmin} 
+        <Header
+          isAdmin={isAdmin}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen} 
         />
-        
+
         <HeadContent>
-          <ButtonText title="voltar" iconSize={22} onClick={handleBack}/>       
+          <ButtonText title="voltar" iconSize={22} onClick={handleBack} />
         </HeadContent>
 
-        <MainContent>   
+        <MainContent>
           <h1>Editar prato</h1>
 
           <Form>
@@ -197,9 +207,9 @@ export function Edit({ isAdmin }){
 
                     <span>{fileName || "Selecione imagem para alterá-la"}</span>
 
-                    <input 
-                      id="image" 
-                      type="file" 
+                    <input
+                      id="image"
+                      type="file"
                       onChange={handleImageChange}
                     />
                   </label>
@@ -207,18 +217,18 @@ export function Edit({ isAdmin }){
               </Section>
 
               <Section title="Nome" className="name">
-                <Input 
-                  type="text" 
+                <Input
+                  type="text"
                   placeholder="Salada Ceasar"
                   value={name}
-                  onChange={e => setName(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 />
               </Section>
 
               <Section title="Categoria" className="category">
                 <Category>
                   <label htmlFor="category">
-                    <select 
+                    <select
                       id="category"
                       value={category}
                       onChange={e => setCategory(e.target.value)}
@@ -240,7 +250,7 @@ export function Edit({ isAdmin }){
                 <Ingredients>
                   {
                     tags.map((tag, index) => (
-                      <FoodItem 
+                      <FoodItem
                         key={String(index)}
                         value={tag}
                         onClick={() => handleRemoveTag(tag)}
@@ -248,46 +258,47 @@ export function Edit({ isAdmin }){
                     ))
                   }
 
-                  <FoodItem 
-                    isNew 
+                  <FoodItem
+                    isNew
                     placeholder="Adicionar"
-                    onChange={(e) => setNewTag(e.target.value)}
-                    value={newTag} 
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewTag(e.target.value)}
+                    value={newTag}
                     onClick={handleAddTag}
-                  />   
+                  />
+
                 </Ingredients>
               </Section>
 
               <Section title="Preço" className="price">
-                <Input 
-                  type="number" 
+                <Input
+                  type="number"
                   placeholder="R$ 40,00"
                   value={price}
-                  onChange={e => setPrice(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
                 />
               </Section>
             </Row>
 
             <Row>
               <Section title="Descrição" className="description">
-                <Textarea 
+                <Textarea
                   placeholder="A Salada César é uma opção refrescante para o verão."
                   defaultValue={description}
-                  onChange={e => setDescription(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
                 />
               </Section>
             </Row>
 
             <ButtonsRow>
-              <Button 
-                className="delete" 
+              <Button
+                className="delete"
                 title="Excluir prato"
-                loading={loading} 
+                loading={loading}
                 onClick={handleRemoveDish}
               />
-              <Button 
+              <Button
                 title="Salvar alterações"
-                loading={loading} 
+                loading={loading}
                 onClick={handleEditDish}
               />
             </ButtonsRow>
