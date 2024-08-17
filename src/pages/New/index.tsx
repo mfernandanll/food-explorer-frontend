@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row } from "./styles";
 
@@ -16,20 +16,24 @@ import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
-export function New({ isAdmin }){
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
+interface NewProps {
+  isAdmin: boolean;
+}
+
+export function New({ isAdmin }: NewProps){
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState<number>(0);
 	const [description, setDescription] = useState("");
 
-  const [image, setImage] = useState(null);
-  const [fileName, setFileName] = useState("");
+  const [image, setImage] = useState<File | null | string>(null);
+  const [fileName, setFileName] = useState<string>("");
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
@@ -39,7 +43,7 @@ export function New({ isAdmin }){
     navigate(-1);
   }
 
-  function handleRemoveTag(deleted) {
+  function handleRemoveTag(deleted: string) {
     setTags((prevState) => prevState.filter((tag) => tag !== deleted));
   }
 
@@ -48,10 +52,12 @@ export function New({ isAdmin }){
     setNewTag("");
   }
 
-  function handleImageChange(e) {
-    const file = e.target.files[0];
-    setImage(file);
-    setFileName(file.name);
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(file);
+      setFileName(file.name);
+    }
   }
 
   async function handleNewDish() {
@@ -91,7 +97,7 @@ export function New({ isAdmin }){
     formdata.append("image", image);
     formdata.append("name", name);
     formdata.append("category", category);
-    formdata.append("price", price);
+    formdata.append("price", price.toString());
     formdata.append("description", description);
     formdata.append("ingredients", JSON.stringify(tags));
 
@@ -99,9 +105,9 @@ export function New({ isAdmin }){
       await api.post("/dishes", formdata);
       alert("Prato cadastrado com sucesso!");
       navigate("/");
-    } catch (error) {
-      if (error.response) {
-        alert(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && error.response) {
+        alert((error.response as any).data.message);
       } else {
         alert("Não foi possível cadastrar");
       }
@@ -113,13 +119,15 @@ export function New({ isAdmin }){
   return (
     <Container>
       <SideMenu
-        menuIsOpen={menuIsOpen}
-        onCloseMenu={() => setMenuIsOpen(false)}
+        isAdmin={isAdmin}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen} 
       />
       <FixedContent>
         <Header 
-          onOpenMenu={() => setMenuIsOpen(true)} 
-          isAdmin={isAdmin} 
+          isAdmin={isAdmin}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen} 
         />
         
         <HeadContent>
@@ -152,7 +160,7 @@ export function New({ isAdmin }){
                   type="text" 
                   placeholder="Ex.: Salada Ceasar"
                   value={name}
-                  onChange={e => setName(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 />
               </Section>
 
@@ -203,7 +211,7 @@ export function New({ isAdmin }){
                   type="number" 
                   placeholder="R$ 00,00"
                   value={price}
-                  onChange={e => setPrice(e.target.value)}/>
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}/>
               </Section>
             </Row>
 
