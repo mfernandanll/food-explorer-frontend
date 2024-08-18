@@ -55,7 +55,7 @@ export function SignIn(){
             <Section title="Senha" className="inputs">
               <Input
                 type="password"
-                placeholder="No mínimo 6 caracteres"
+                placeholder="No mínimo 3 caracteres"
                 errorMessage={errors.password?.message}
                 {...register('password')}
               />

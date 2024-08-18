@@ -4,23 +4,34 @@ import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
 import { Section } from "../../components/Section";
 import { Link, useNavigate } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
 import { api } from "../../services/api";
 
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from "react-hook-form";
+
+const user = zod.object({
+  name: zod.string().min(1, 'Informe o nome'),
+  email: zod.string().min(1, 'Informe o email').email('E-mail inválido'),
+  password: zod.string().min(3, 'Informe a senha'),
+})
+
+export type UserInfo = zod.infer<typeof user>
+
 export function SignUp(){
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting }
+  } = useForm<UserInfo>({
+    resolver: zodResolver(user),
+  })
 
   const navigate = useNavigate();
 
-  function handleSignUp() {
-    if (!name || !email || !password) {
-      return alert("Preencha todos os campos!");
-    }
-
-    setLoading(true);
+  function handleSignUp(data: UserInfo) {
+    const { name, email, password } = data;
 
     api.post("/users", {name, email, password})
        .then(() => {
@@ -32,7 +43,9 @@ export function SignUp(){
           } else {
             alert("Não foi possível cadastrar");
           }
-       }).finally(() => setLoading(false));
+       })
+    
+    reset();
   }
 
   return (
@@ -40,34 +53,37 @@ export function SignUp(){
       <Content>
         <Logo size="lg"/>
         <Formfield>
-          <Form>
+          <Form onSubmit={handleSubmit(handleSignUp)}>
             <h1>Crie sua conta</h1>
 
             <Section title="Seu nome" className="inputs">
               <Input
                 placeholder="Exemplo: Maria da Silva"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                errorMessage={errors.name?.message}
+                {...register('name')}
               />
             </Section>
 
             <Section title="Email" className="inputs">
               <Input
                 placeholder="Exemplo: exemplo@exemplo.com.br"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                errorMessage={errors.email?.message}
+                {...register('email')}
               />
             </Section>
 
             <Section title="Senha" className="inputs">
               <Input
-                placeholder="No mínimo 6 caracteres"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                placeholder="No mínimo 3 caracteres"
+                errorMessage={errors.password?.message}
+                {...register('password')}
               />
             </Section>
 
             <Button
+              type="submit"
               title="Criar conta"
-              loading={loading}
-              onClick={handleSignUp}
+              loading={isSubmitting}
             />
 
             <Link to="/">
