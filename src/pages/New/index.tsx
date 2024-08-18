@@ -157,6 +157,7 @@ export function New({ isAdmin }: NewProps){
 
               <Section title="Nome" className="name">
                 <Input 
+                  variant="secondary"
                   type="text" 
                   placeholder="Ex.: Salada Ceasar"
                   value={name}
@@ -208,6 +209,7 @@ export function New({ isAdmin }: NewProps){
 
               <Section title="Preço" className="price">
                 <Input 
+                  variant="secondary"
                   type="number" 
                   placeholder="R$ 00,00"
                   value={price}

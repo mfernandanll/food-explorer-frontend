@@ -59,7 +59,7 @@ export const Form = styled.div`
     }
   }
 
-  > section > div > input {
+  /* > section > div > input {
     background-color: ${({ theme }) => theme.COLORS.DARK_900};
     color: ${({ theme }) => theme.COLORS.LIGHT_100};
     border-radius: 0.5rem;
@@ -67,7 +67,7 @@ export const Form = styled.div`
     &:focus {
       border: 1px solid ${({ theme }) => theme.COLORS.LIGHT_100};
     }
-  }
+  } */
 
   > a {
     color: ${({theme}) => theme.COLORS.LIGHT_100};

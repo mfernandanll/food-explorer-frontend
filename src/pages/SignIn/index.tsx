@@ -5,27 +5,34 @@ import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
 import { Section } from "../../components/Section";
 import { useAuth } from "../../hooks/auth";
-import { ChangeEvent, useState } from "react";
+
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from "react-hook-form";
+
+const user = zod.object({
+  email: zod.string().min(1, 'Informe o email').email('E-mail inválido'),
+  password: zod.string().min(3, 'Informe a senha'),
+})
+
+export type UserInfo = zod.infer<typeof user>
 
 export function SignIn(){
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting }
+  } = useForm<UserInfo>({
+    resolver: zodResolver(user),
+  })
 
   const { signIn } = useAuth();
-  
-  function handleSignIn() {
-    if (!email) {
-      return alert("Digite seu e-mail")
-    }
 
-    if (!password) {
-      return alert("Digite sua senha")
-    }
-
-    setLoading(true);
-
-    signIn( email, password ).finally(() => setLoading(false));
+  function handleSignIn(data: UserInfo) {
+    const { email, password } = data;
+    signIn( email, password );
+    reset();
   }
 
   return (
@@ -33,27 +40,31 @@ export function SignIn(){
       <Content>
         <Logo size="lg"/>
         <Formfield>
-          <Form>
+          <Form onSubmit={handleSubmit(handleSignIn)}>
             <h1>Faça login</h1>
 
             <Section title="Email" className="inputs">
               <Input
+                type="text"
                 placeholder="Exemplo: exemplo@exemplo.com.br"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                errorMessage={errors.email?.message}
+                {...register('email')}
               />
             </Section>
 
             <Section title="Senha" className="inputs">
               <Input
+                type="password"
                 placeholder="No mínimo 6 caracteres"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                errorMessage={errors.password?.message}
+                {...register('password')}
               />
             </Section>
 
             <Button
+              type="submit"
               title="Entrar"
-              loading={loading}
-              onClick={handleSignIn}
+              loading={isSubmitting}
             />
             
             <Link to="/register">

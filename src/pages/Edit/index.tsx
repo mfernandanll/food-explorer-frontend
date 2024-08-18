@@ -219,6 +219,7 @@ export function Edit({ isAdmin }: EditProps) {
               <Section title="Nome" className="name">
                 <Input
                   type="text"
+                  variant="secondary"
                   placeholder="Salada Ceasar"
                   value={name}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
@@ -272,6 +273,7 @@ export function Edit({ isAdmin }: EditProps) {
               <Section title="Preço" className="price">
                 <Input
                   type="number"
+                  variant="secondary"
                   placeholder="R$ 40,00"
                   value={price}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}

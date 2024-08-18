@@ -77,11 +77,11 @@ export const Row = styled.div`
   display: flex;
   flex-direction: column;
   
-  > section > div > input {
+  /* > section > div > input {
     background-color: ${({ theme }) => theme.COLORS.DARK_800};
     color: ${({ theme }) => theme.COLORS.LIGHT_100};
     border-radius: 0.5rem;
-  }
+  } */
   
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
     flex-direction: row;
@@ -155,7 +155,7 @@ export const Image = styled.div`
 `
 
 export const Category = styled.div`
-  background-color: ${({ theme }) => theme.COLORS.DARK_900};
+  background-color: ${({ theme }) => theme.COLORS.DARK_800};
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   
