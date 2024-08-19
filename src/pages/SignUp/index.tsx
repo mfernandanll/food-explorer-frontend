@@ -2,7 +2,7 @@ import { Container, Content, Form, Formfield } from "./styles";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
-import { Section } from "../../components/Section";
+import { InputField } from "../../components/Section";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
@@ -55,29 +55,29 @@ export function SignUp(){
           <Form onSubmit={handleSubmit(handleSignUp)}>
             <h1>Crie sua conta</h1>
 
-            <Section title="Seu nome" className="inputs">
+            <InputField title="Seu nome" className="inputs">
               <Input
                 placeholder="Exemplo: Maria da Silva"
                 errorMessage={errors.name?.message}
                 {...register('name')}
               />
-            </Section>
+            </InputField>
 
-            <Section title="Email" className="inputs">
+            <InputField title="Email" className="inputs">
               <Input
                 placeholder="Exemplo: exemplo@exemplo.com.br"
                 errorMessage={errors.email?.message}
                 {...register('email')}
               />
-            </Section>
+            </InputField>
 
-            <Section title="Senha" className="inputs">
+            <InputField title="Senha" className="inputs">
               <Input
                 placeholder="No mínimo 3 caracteres"
                 errorMessage={errors.password?.message}
                 {...register('password')}
               />
-            </Section>
+            </InputField>
 
             <Button
               type="submit"

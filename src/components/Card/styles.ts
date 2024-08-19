@@ -64,7 +64,13 @@ export const Container = styled.div`
       text-align: center;
 
       color: ${({ theme }) => theme.COLORS.GRAY_100};
+
       overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+              line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
 
     > span {

@@ -14,6 +14,8 @@ export const Container = styled.div<BaseProps>`
 
   flex-grow: 1;
 
+  cursor: pointer;
+  
   > small {
     color: ${({ theme}) => theme.COLORS.CAKE_100};
     font-size: 0.75;

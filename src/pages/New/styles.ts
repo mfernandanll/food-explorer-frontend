@@ -77,15 +77,14 @@ export const Row = styled.div`
   display: flex;
   flex-direction: column;
   
-  /* > section > div > input {
-    background-color: ${({ theme }) => theme.COLORS.DARK_800};
-    color: ${({ theme }) => theme.COLORS.LIGHT_100};
-    border-radius: 0.5rem;
-  } */
-  
   @media (min-width: ${DEVICE_BREAKPOINTS.LG}) {
     flex-direction: row;
     gap: 2rem;
+
+    .image {
+      width: 19.168rem;
+      max-width: 19.168rem;
+    }
 
     .image, .price, .description {
       flex-grow: 1;

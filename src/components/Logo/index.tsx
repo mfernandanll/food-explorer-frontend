@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
 import { Brand, Container, LogoIcon } from "./styles";
 
@@ -10,8 +11,14 @@ export function Logo({size}: LogoProps) {
   const { checkIfUserIsAdmin } = useAuth();
   const isAdmin = checkIfUserIsAdmin();
 
+  const navigate = useNavigate();
+
+  function handleNavigate(){
+    navigate('/');
+  }
+
   return (
-    <Container $size={size}>
+    <Container $size={size} onClickCapture={handleNavigate}>
       <Brand $size={size}>
         <LogoIcon $size={size}/>
 

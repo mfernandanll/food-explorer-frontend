@@ -7,7 +7,7 @@ import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { SideMenu } from "../../components/SideMenu";
 import { Button } from "../../components/Button";
-import { Section } from "../../components/Section";
+import { InputField } from "../../components/Section";
 import { Input } from "../../components/Input";
 import { FoodItem } from "../../components/FoodItem";
 import { Textarea } from "../../components/Textarea";
@@ -122,13 +122,11 @@ export function New() {
   return (
     <Container>
       <SideMenu
-        isAdmin={true}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
       <FixedContent>
         <Header
-          isAdmin={true}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen}
         />
@@ -142,7 +140,7 @@ export function New() {
 
           <Form onSubmit={handleSubmit(handleNewDish)}>
             <Row>
-              <Section title="Imagem do prato" className="image">
+              <InputField title="Imagem do prato" className="image">
                 <Image>
                   <label htmlFor="image">
                     <UploadSimple size={24} />
@@ -161,9 +159,9 @@ export function New() {
                 {errors.image && errors.image.message && typeof errors.image.message === 'string' ? (
                   <ErrorMessage role="alert">{errors.image?.message}</ErrorMessage>
                 ) : null}
-              </Section>
+              </InputField>
 
-              <Section title="Nome" className="name">
+              <InputField title="Nome" className="name">
                 <Input
                   variant="secondary"
                   type="text"
@@ -171,9 +169,9 @@ export function New() {
                   errorMessage={errors.name?.message}
                   {...register('name')}
                 />
-              </Section>
+              </InputField>
 
-              <Section title="Categoria" className="category">
+              <InputField title="Categoria" className="category">
                 <Category>
                   <label htmlFor="category">
                     <select
@@ -194,11 +192,11 @@ export function New() {
                   <ErrorMessage role="alert">{errors.category?.message}</ErrorMessage>
                 ) : null}
 
-              </Section>
+              </InputField>
             </Row>
 
             <Row>
-              <Section title="Ingredientes" className="ingredients">
+              <InputField title="Ingredientes" className="ingredients">
                 <Ingredients>
                   {
                     fields?.map((ingredient, index) => (
@@ -223,9 +221,9 @@ export function New() {
                   <ErrorMessage role="alert">{errors.ingredients?.message}</ErrorMessage>
                 ) : null}
 
-              </Section>
+              </InputField>
 
-              <Section title="Preço" className="price">
+              <InputField title="Preço" className="price">
                 <Input
                   variant="secondary"
                   type="number"
@@ -233,17 +231,17 @@ export function New() {
                   errorMessage={errors.price?.message}
                   {...register('price', { valueAsNumber: true })}
                 />
-              </Section>
+              </InputField>
             </Row>
 
             <Row>
-              <Section title="Descrição" className="description">
+              <InputField title="Descrição" className="description">
                 <Textarea
                   placeholder="Fale brevemente sobre o prato, seus ingredientes e composição"
                   errorMessage={errors.description?.message}
                   {...register('description')}
                 />
-              </Section>
+              </InputField>
             </Row>
 
             <Button

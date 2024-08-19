@@ -3,7 +3,7 @@ import { Container, Content, Form, Formfield } from "./styles";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { Logo } from "../../components/Logo";
-import { Section } from "../../components/Section";
+import { InputField } from "../../components/Section";
 import { useAuth } from "../../hooks/auth";
 
 import * as zod from 'zod'
@@ -43,23 +43,23 @@ export function SignIn(){
           <Form onSubmit={handleSubmit(handleSignIn)}>
             <h1>Faça login</h1>
 
-            <Section title="Email" className="inputs">
+            <InputField title="Email" className="inputs">
               <Input
                 type="text"
                 placeholder="Exemplo: exemplo@exemplo.com.br"
                 errorMessage={errors.email?.message}
                 {...register('email')}
               />
-            </Section>
+            </InputField>
 
-            <Section title="Senha" className="inputs">
+            <InputField title="Senha" className="inputs">
               <Input
                 type="password"
                 placeholder="No mínimo 3 caracteres"
                 errorMessage={errors.password?.message}
                 {...register('password')}
               />
-            </Section>
+            </InputField>
 
             <Button
               type="submit"

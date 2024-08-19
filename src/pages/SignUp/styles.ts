@@ -59,16 +59,6 @@ export const Form = styled.form`
     }
   }
 
-  /* > section > div > input {
-    background-color: ${({ theme }) => theme.COLORS.DARK_900};
-    color: ${({ theme }) => theme.COLORS.LIGHT_100};
-    border-radius: 0.5rem;
-
-    &:focus {
-      border: 1px solid ${({ theme }) => theme.COLORS.LIGHT_100};
-    }
-  } */
-
   > a {
     color: ${({theme}) => theme.COLORS.LIGHT_100};
     font-size: 0.875rem;
