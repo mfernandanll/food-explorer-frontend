@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row, ButtonsRow } from "./styles";
+import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row, ButtonsRow, ErrorMessage } from "./styles";
 
 import { ButtonText } from "../../components/ButtonText";
 import { Footer } from "../../components/Footer";
@@ -16,6 +16,45 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../services/api";
 import { Dish } from "../Home";
 
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm } from "react-hook-form";
+
+const MAX_FILE_SIZE = 200000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const imageSchema = zod
+  .any()
+  .refine((file: File) => file?.size <= MAX_FILE_SIZE, `O tamanho máximo do arquivo é 2MB.`)
+  .refine(
+    (file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    "Apenas arquivos de extensão .jpg, .jpeg, .png e .webp são aceitos"
+  )
+
+const dishSchema = zod.object({
+  image: imageSchema,
+  name: zod.string().min(1, 'Informe o nome do prato'),
+  category: zod.enum(['meal', 'dessert', 'beverage'], {
+    errorMap: (issue) => {
+      if (issue.code === 'invalid_enum_value') {
+        return { message: 'Selecione ao menos uma categoria' }
+      }
+      return { message: issue.message ?? '' }
+    },
+  }),
+  price: zod.number({
+    invalid_type_error: "Digite apenas números",
+  })
+    .min(0, 'Informe o preço')
+    .nonnegative(),
+  description: zod.string().min(1, 'Digite a descrição do prato'),
+  ingredients: zod.array(zod.object({
+    value: zod.string()
+  })).nonempty('Adicione pelo menos um ingrediente ao prato'),
+})
+
+export type DishInfo = zod.infer<typeof dishSchema>
+
 interface EditProps {
   isAdmin: boolean;
 }
@@ -24,15 +63,6 @@ export function Edit({ isAdmin }: EditProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState("");
-
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [description, setDescription] = useState("");
-
-  const [image, setImage] = useState<File | null | string>(null);
   const [fileName, setFileName] = useState<string>("");
 
   const [dish, setDish] = useState<Dish | null>(null);
@@ -40,58 +70,73 @@ export function Edit({ isAdmin }: EditProps) {
   const navigate = useNavigate();
   const params = useParams();
 
+  const [newIngredient, setNewIngredient] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setError,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting }
+  } = useForm<DishInfo>({
+    resolver: zodResolver(dishSchema),
+    defaultValues: {
+      ingredients: [],
+    },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'ingredients',
+    rules: {
+      required: "Campo obrigatório",
+      maxLength: { value: 9, message: "Número máximo de ingredientes é 9" },
+    }
+  });
+
   function handleBack() {
     navigate(-1);
   }
 
-  function handleRemoveTag(deleted: string) {
-    setTags((prevState) => prevState.filter((tag) => tag !== deleted));
+  function handleRemoveTag(index: number) {
+    remove(index)
   }
 
   function handleAddTag() {
-    setTags((prevState) => [...prevState, newTag]);
-    setNewTag("");
+    if (newIngredient.length == 0) {
+      return setError('ingredients', { message: 'Digite o nome do ingrediente' });
+    };
+
+    if (newIngredient.length > 20) {
+      return setError('ingredients', { message: 'Ingrediente excedeu número de 20 caracteres' });
+    };
+
+    if (newIngredient.length > 0 && newIngredient.length <= 255) {
+      append({ value: newIngredient });
+      setNewIngredient("");
+    };
   }
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
     if (file) {
-      setImage(file);
+      setValue('image', file);
       setFileName(file.name);
     }
   }
 
-  async function handleEditDish() {
-    if (!image) {
-      return alert("Selecione a imagem do prato")
+  async function handleEditDish(data: DishInfo) {
+    const { name, category, image, description, ingredients, price } = data;
+
+    if (newIngredient) {
+      return setError('ingredients', 
+        { message: 'Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio.' });
     }
 
-    if (!name) {
-      return alert("Digite o nome do prato")
-    }
-
-    if (!category) {
-      return alert("Selecione a categoria do prato")
-    }
-
-    if (tags.length === 0) {
-      return alert("Informe ao menos um ingrediente do prato")
-    }
-
-    if (newTag) {
-      return alert(
-        "Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio."
-      );
-    }
-
-    if (!price) {
-      return alert("Informe o preço do prato")
-    }
-
-    if (!description) {
-      return alert("Digite a descrição do prato")
-    }
+    const formattedIngredients = ingredients.map((ingredient) => ingredient.value)
 
     setLoading(true);
 
@@ -101,7 +146,7 @@ export function Edit({ isAdmin }: EditProps) {
         category,
         price,
         description,
-        ingredients: JSON.stringify(tags)
+        ingredients: JSON.stringify(formattedIngredients)
       };
 
       if (image) {
@@ -164,16 +209,17 @@ export function Edit({ isAdmin }: EditProps) {
   }, [params.id])
 
   useEffect(() => {
-    if (dish) {      
+    if (dish) {            
+      const allIngredients = dish.ingredients.map((ingredient) => ({value: ingredient.name}));
+      type ExpectedType = [{ value: string; }, ...{ value: string; }[]];
+      
       setFileName(dish.image ?? '');
-      setImage(dish.image);
-      setName(dish.name);
-      setCategory(dish.category);
-      setPrice(dish.price);
-      setDescription(dish.description);
-
-      const allIngredients = dish.ingredients.map((ingredient) => ingredient.name);
-      setTags(allIngredients);
+      setValue('image', dish.image);
+      setValue('name', dish.name);
+      setValue('category', dish.category);
+      setValue('price', dish.price);
+      setValue('description', dish.description);
+      setValue('ingredients', allIngredients as ExpectedType)
     }
   }, [dish])
 
@@ -198,7 +244,7 @@ export function Edit({ isAdmin }: EditProps) {
         <MainContent>
           <h1>Editar prato</h1>
 
-          <Form>
+          <Form onSubmit={handleSubmit(handleEditDish)}>
             <Row>
               <Section title="Imagem do prato" className="image">
                 <Image>
@@ -210,10 +256,14 @@ export function Edit({ isAdmin }: EditProps) {
                     <input
                       id="image"
                       type="file"
-                      onChange={handleImageChange}
+                      onChange={(e) => handleImageChange(e)}
                     />
                   </label>
                 </Image>
+
+                {errors.image && errors.image.message && typeof errors.image.message === 'string' ? (
+                  <ErrorMessage role="alert">{errors.image?.message}</ErrorMessage>
+                ) : null}
               </Section>
 
               <Section title="Nome" className="name">
@@ -221,8 +271,9 @@ export function Edit({ isAdmin }: EditProps) {
                   type="text"
                   variant="secondary"
                   placeholder="Salada Ceasar"
-                  value={name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                  value={watch('name')}
+                  errorMessage={errors.name?.message}
+                  {...register('name')}
                 />
               </Section>
 
@@ -231,8 +282,8 @@ export function Edit({ isAdmin }: EditProps) {
                   <label htmlFor="category">
                     <select
                       id="category"
-                      value={category}
-                      onChange={e => setCategory(e.target.value)}
+                      value={watch('category')}
+                      {...register('category')}
                     >
                       <option value="">Selecionar</option>
                       <option value="meal">Refeição</option>
@@ -243,6 +294,10 @@ export function Edit({ isAdmin }: EditProps) {
                     <CaretDown size={"1.5rem"} />
                   </label>
                 </Category>
+
+                {errors.category?.message ? (
+                  <ErrorMessage role="alert">{errors.category?.message}</ErrorMessage>
+                ) : null}
               </Section>
             </Row>
 
@@ -250,11 +305,11 @@ export function Edit({ isAdmin }: EditProps) {
               <Section title="Ingredientes" className="ingredients">
                 <Ingredients>
                   {
-                    tags.map((tag, index) => (
+                    fields?.map((ingredient, index) => (
                       <FoodItem
-                        key={String(index)}
-                        value={tag}
-                        onClick={() => handleRemoveTag(tag)}
+                        key={ingredient.id}
+                        value={ingredient.value}
+                        onClick={() => handleRemoveTag(index)}
                       />
                     ))
                   }
@@ -262,12 +317,16 @@ export function Edit({ isAdmin }: EditProps) {
                   <FoodItem
                     isNew
                     placeholder="Adicionar"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setNewTag(e.target.value)}
-                    value={newTag}
+                    value={newIngredient}
+                    onChange={(event) => setNewIngredient(event.target.value)}
                     onClick={handleAddTag}
                   />
 
                 </Ingredients>
+
+                {errors.ingredients?.message ? (
+                  <ErrorMessage role="alert">{errors.ingredients?.message}</ErrorMessage>
+                ) : null}
               </Section>
 
               <Section title="Preço" className="price">
@@ -275,8 +334,9 @@ export function Edit({ isAdmin }: EditProps) {
                   type="number"
                   variant="secondary"
                   placeholder="R$ 40,00"
-                  value={price}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}
+                  value={watch('price')}
+                  errorMessage={errors.price?.message}
+                  {...register('price', { valueAsNumber: true })}
                 />
               </Section>
             </Row>
@@ -285,8 +345,9 @@ export function Edit({ isAdmin }: EditProps) {
               <Section title="Descrição" className="description">
                 <Textarea
                   placeholder="A Salada César é uma opção refrescante para o verão."
-                  defaultValue={description}
-                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
+                  defaultValue={watch('description')}
+                  errorMessage={errors.description?.message}
+                  {...register('description')}
                 />
               </Section>
             </Row>
@@ -299,9 +360,9 @@ export function Edit({ isAdmin }: EditProps) {
                 onClick={handleRemoveDish}
               />
               <Button
+                type="submit"
                 title="Salvar alterações"
-                loading={loading}
-                onClick={handleEditDish}
+                loading={isSubmitting}
               />
             </ButtonsRow>
           </Form>

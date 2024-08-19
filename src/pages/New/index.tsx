@@ -20,7 +20,6 @@ import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from "react-hook-form";
 
-
 const MAX_FILE_SIZE = 200000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
@@ -116,8 +115,6 @@ export function New({ isAdmin }: NewProps) {
   }
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.files?.[0]);
-
     const file = event.target.files?.[0];
 
     if (file) {
