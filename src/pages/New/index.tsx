@@ -24,11 +24,8 @@ import { createDish } from "../../services/createDish";
 
 export type DishInfo = zod.infer<typeof dishSchema>
 
-interface NewProps {
-  isAdmin: boolean;
-}
 
-export function New({ isAdmin }: NewProps) {
+export function New() {
   const [newIngredient, setNewIngredient] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [fileName, setFileName] = useState<string>("");
@@ -125,13 +122,13 @@ export function New({ isAdmin }: NewProps) {
   return (
     <Container>
       <SideMenu
-        isAdmin={isAdmin}
+        isAdmin={true}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
       <FixedContent>
         <Header
-          isAdmin={isAdmin}
+          isAdmin={true}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen}
         />

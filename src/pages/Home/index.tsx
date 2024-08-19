@@ -27,12 +27,9 @@ import "swiper/css/navigation";
 import { useNavigate } from "react-router-dom";
 import { fetchDishesBySearch } from "../../services/fetchDishes";
 import { FormattedDishes } from "../../@types/types";
+import { useAuth } from "../../hooks/auth";
 
-interface HomeProps {
-  isAdmin: boolean;
-}
-
-export function Home({ isAdmin }: HomeProps) {
+export function Home() {
   const swiperElRef1 = useRef(null);
   const swiperElRef2 = useRef(null);
   const swiperElRef3 = useRef(null);
@@ -44,6 +41,9 @@ export function Home({ isAdmin }: HomeProps) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   
   const navigate = useNavigate();
+
+  const { checkIfUserIsAdmin } = useAuth();
+  const isAdmin = checkIfUserIsAdmin();
   
   function handleDetails(id: string) {
     navigate(`/details/${id}`);
@@ -63,7 +63,6 @@ export function Home({ isAdmin }: HomeProps) {
       {
         !isDesktop &&
         <SideMenu
-          isAdmin={isAdmin}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen} 
           setSearch={setSearch}
@@ -72,7 +71,6 @@ export function Home({ isAdmin }: HomeProps) {
 
       <FixedContent>
         <Header
-          isAdmin={isAdmin}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen} 
           setSearch={setSearch}
@@ -113,7 +111,6 @@ export function Home({ isAdmin }: HomeProps) {
               {dishes.meals && dishes.meals.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
-                    isAdmin={isAdmin}
                     handleDetails={handleDetails}
                     data={dish}
                   />
@@ -144,7 +141,6 @@ export function Home({ isAdmin }: HomeProps) {
               {dishes.desserts && dishes.desserts.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
-                    isAdmin={isAdmin}
                     handleDetails={handleDetails}
                     data={dish}
                   />
@@ -175,7 +171,6 @@ export function Home({ isAdmin }: HomeProps) {
               {dishes.beverages && dishes.beverages.map((dish) => (
                 <SwiperSlide key={String(dish.id)}>
                   <Card
-                    isAdmin={isAdmin}
                     handleDetails={handleDetails}
                     data={dish}
                   />

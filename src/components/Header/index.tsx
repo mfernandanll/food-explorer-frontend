@@ -15,22 +15,22 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
 
 interface HeaderProps {
-  isAdmin?: boolean; 
   isMenuOpen: boolean; 
   setIsMenuOpen: (value: boolean) => void;
   setSearch?: (value: string) => void;
 }
 
 export function Header({
-  isAdmin,
   isMenuOpen,
   setIsMenuOpen,
   setSearch,
 }: HeaderProps) {
-  const { signOut } = useAuth();
+  const { signOut, checkIfUserIsAdmin } = useAuth();
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   const navigate = useNavigate();
+
+  const isAdmin = checkIfUserIsAdmin();
 
   function handleSignOut() {
     navigate("/");
@@ -58,7 +58,7 @@ export function Header({
 
       {(isDesktop || !isMenuOpen) && (
         <>
-          <Logo size="md" isAdmin={isAdmin} />
+          <Logo size="md" />
 
           <HeaderSerachArea>
             <Search setSearch={setSearch} />

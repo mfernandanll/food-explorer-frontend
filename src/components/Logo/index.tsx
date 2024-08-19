@@ -1,12 +1,15 @@
 
+import { useAuth } from "../../hooks/auth";
 import { Brand, Container, LogoIcon } from "./styles";
 
 interface LogoProps {
   size: 'sm' | 'md' | 'lg';
-  isAdmin?: boolean;
 }
 
-export function Logo({size, isAdmin = false}: LogoProps) {
+export function Logo({size}: LogoProps) {
+  const { checkIfUserIsAdmin } = useAuth();
+  const isAdmin = checkIfUserIsAdmin();
+
   return (
     <Container $size={size}>
       <Brand $size={size}>

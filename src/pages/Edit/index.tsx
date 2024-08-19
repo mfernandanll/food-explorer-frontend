@@ -24,11 +24,7 @@ import { updateDish } from "../../services/updateDish";
 
 export type DishInfo = zod.infer<typeof dishSchema>
 
-interface EditProps {
-  isAdmin: boolean;
-}
-
-export function Edit({ isAdmin }: EditProps) {
+export function Edit() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -179,13 +175,13 @@ export function Edit({ isAdmin }: EditProps) {
   return (
     <Container>
       <SideMenu
-        isAdmin={isAdmin}
+        isAdmin={true}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen} 
       />
       <FixedContent>
         <Header
-          isAdmin={isAdmin}
+          isAdmin={true}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen} 
         />

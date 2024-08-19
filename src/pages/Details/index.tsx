@@ -16,12 +16,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { api } from "../../services/api";
 import { Dish } from "../../@types/types";
 import { fetchDishById } from "../../services/fetchDishes";
+import { useAuth } from "../../hooks/auth";
 
-interface DetailsProps {
-  isAdmin: boolean;
-}
 
-export function Details({ isAdmin }: DetailsProps) {
+export function Details() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [data, setData] = useState<Dish>();
 
@@ -29,6 +27,9 @@ export function Details({ isAdmin }: DetailsProps) {
 
   const params = useParams();
   const navigate = useNavigate();
+
+  const { checkIfUserIsAdmin } = useAuth();
+  const isAdmin = checkIfUserIsAdmin();
 
   function handleBack() {
     navigate(-1);
@@ -52,14 +53,12 @@ export function Details({ isAdmin }: DetailsProps) {
   return (
     <Container>
       <SideMenu
-        isAdmin={isAdmin}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen} 
       />
 
       <FixedContent>
         <Header 
-          isAdmin={isAdmin}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen} 
         />

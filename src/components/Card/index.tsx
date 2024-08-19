@@ -7,17 +7,19 @@ import { CaretRight, HeartStraight, Minus, PencilSimple, Plus } from "@phosphor-
 import { useNavigate } from 'react-router-dom';
 import { api } from "../../services/api";
 import { Dish } from "../../@types/types";
+import { useAuth } from "../../hooks/auth";
 
 interface CardProps {
   data: Dish;
-  isAdmin: boolean;
   handleDetails: (id: string) => void;
 }
 
-
-export function Card({ data, isAdmin, handleDetails }: CardProps) {
+export function Card({ data, handleDetails }: CardProps) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   const navigate = useNavigate();
+
+  const { checkIfUserIsAdmin } = useAuth();
+  const isAdmin = checkIfUserIsAdmin();
 
   function handleEdit() {
     navigate(`/edit/${data.id}`);

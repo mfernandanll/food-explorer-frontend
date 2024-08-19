@@ -5,6 +5,7 @@ interface AuthContextType {
   signIn: (name: string, password: string) => Promise<void>,
   signUp: (name: string, email: string, password: string) => Promise<void>,
   signOut: () => void,
+  checkIfUserIsAdmin: () => boolean,
   user: User;
 }
 
@@ -31,6 +32,8 @@ interface UserInfo {
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<UserInfo>({} as UserInfo);
+
+  const checkIfUserIsAdmin = () => data.user && data.user.role === 'admin'
 
   async function signIn(email: string, password: string) {
     try {
@@ -93,7 +96,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         signIn,
         signUp,
         signOut,
-        user: data.user
+        user: data.user,
+        checkIfUserIsAdmin
       }}
     >
       {children}

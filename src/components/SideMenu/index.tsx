@@ -6,15 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "../Header";
 
 interface SideMenuProps {
-  isAdmin: boolean; 
   isMenuOpen: boolean; 
   setIsMenuOpen: (value: boolean) => void;
   setSearch?: (value: string) => void;
 }
 
-export function SideMenu({ isAdmin, isMenuOpen, setIsMenuOpen, setSearch }: SideMenuProps) {
-  const { signOut } = useAuth();
+export function SideMenu({ isMenuOpen, setIsMenuOpen, setSearch }: SideMenuProps) {
+  const { signOut, checkIfUserIsAdmin } = useAuth();
   const navigate = useNavigate();
+
+  const isAdmin = checkIfUserIsAdmin();
 
   function handleNew() {
     navigate("/new");
