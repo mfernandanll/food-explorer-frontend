@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row } from "./styles";
+import { Category, Container, FixedContent, Form, HeadContent, Image, MainContent, Ingredients, Row, ErrorMessage } from "./styles";
 
 import { ButtonText } from "../../components/ButtonText";
 import { Footer } from "../../components/Footer";
@@ -16,82 +16,125 @@ import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm } from "react-hook-form";
+
+
+const MAX_FILE_SIZE = 200000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const imageSchema = zod
+  .any()
+  .refine((file: File) => file?.size <= MAX_FILE_SIZE, `O tamanho máximo do arquivo é 2MB.`)
+  .refine(
+    (file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    "Apenas arquivos de extensão .jpg, .jpeg, .png e .webp são aceitos"
+  )
+
+const dish = zod.object({
+  image: imageSchema,
+  name: zod.string().min(1, 'Informe o nome do prato'),
+  category: zod.enum(['meal', 'dessert', 'beverage'], {
+    errorMap: (issue) => {
+      if (issue.code === 'invalid_enum_value') {
+        return { message: 'Selecione ao menos uma categoria' }
+      }
+      return { message: issue.message ?? '' }
+    },
+  }),
+  price: zod.number({
+    invalid_type_error: "Digite apenas números",
+  })
+    .min(0, 'Informe o preço')
+    .nonnegative(),
+  description: zod.string().min(1, 'Digite a descrição do prato'),
+  ingredients: zod.array(zod.object({
+    value: zod.string()
+  })).nonempty('Adicione pelo menos um ingrediente ao prato'),
+})
+
+export type DishInfo = zod.infer<typeof dish>
+
 interface NewProps {
   isAdmin: boolean;
 }
 
-export function New({ isAdmin }: NewProps){
+export function New({ isAdmin }: NewProps) {
+  const [newIngredient, setNewIngredient] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState("");
-  
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState<number>(0);
-	const [description, setDescription] = useState("");
-
-  const [image, setImage] = useState<File | null | string>(null);
   const [fileName, setFileName] = useState<string>("");
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    setError,
+    setValue,
+    formState: { errors, isSubmitting }
+  } = useForm<DishInfo>({
+    resolver: zodResolver(dish),
+    defaultValues: {
+      ingredients: [],
+    },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'ingredients',
+    rules: {
+      required: "Campo obrigatório",
+      maxLength: { value: 9, message: "Número máximo de ingredientes é 9" },
+    }
+  });
+
   function handleBack() {
     navigate(-1);
   }
 
-  function handleRemoveTag(deleted: string) {
-    setTags((prevState) => prevState.filter((tag) => tag !== deleted));
+  function handleRemoveTag(index: number) {
+    remove(index)
   }
 
   function handleAddTag() {
-    setTags((prevState) => [...prevState, newTag]);
-    setNewTag("");
+    if (newIngredient.length == 0) {
+      return setError('ingredients', { message: 'Digite o nome do ingrediente' });
+    };
+
+    if (newIngredient.length > 20) {
+      return setError('ingredients', { message: 'Ingrediente excedeu número de 20 caracteres' });
+    };
+
+    if (newIngredient.length > 0 && newIngredient.length <= 255) {
+      append({ value: newIngredient });
+      setNewIngredient("");
+    };
   }
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    console.log(event.target.files?.[0]);
+
     const file = event.target.files?.[0];
+
     if (file) {
-      setImage(file);
+      setValue('image', file);
       setFileName(file.name);
     }
   }
 
-  async function handleNewDish() {
-    if (!image) {
-      return alert("Selecione a imagem do prato")
+  async function handleNewDish(data: DishInfo) {
+    const { name, category, image, description, ingredients, price } = data;
+
+    if (newIngredient) {
+      return setError('ingredients', 
+        { message: 'Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio.' });
     }
 
-    if (!name) {
-      return alert("Digite o nome do prato")
-    }
-
-    if (!category) {
-      return alert("Selecione a categoria do prato")
-    }
-
-    if (tags.length === 0) {
-      return alert("Informe ao menos um ingrediente do prato")
-    }
-
-    if (newTag) {
-      return alert(
-        "Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio."
-      );
-    }
-
-    if (!price) {
-      return alert("Informe o preço do prato")
-    }
-
-    if (!description) {
-      return alert("Digite a descrição do prato")
-    }
-
-    setLoading(true);
+    const formattedIngredients = ingredients.map((ingredient) => ingredient.value)
 
     const formdata = new FormData();
     formdata.append("image", image);
@@ -99,7 +142,7 @@ export function New({ isAdmin }: NewProps){
     formdata.append("category", category);
     formdata.append("price", price.toString());
     formdata.append("description", description);
-    formdata.append("ingredients", JSON.stringify(tags));
+    formdata.append("ingredients", JSON.stringify(formattedIngredients));
 
     try {
       await api.post("/dishes", formdata);
@@ -111,33 +154,31 @@ export function New({ isAdmin }: NewProps){
       } else {
         alert("Não foi possível cadastrar");
       }
-    } finally {
-      setLoading(false);
     }
-  } 
+  }
 
   return (
     <Container>
       <SideMenu
         isAdmin={isAdmin}
         isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen} 
+        setIsMenuOpen={setIsMenuOpen}
       />
       <FixedContent>
-        <Header 
+        <Header
           isAdmin={isAdmin}
           isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen} 
+          setIsMenuOpen={setIsMenuOpen}
         />
-        
+
         <HeadContent>
-          <ButtonText title="voltar" iconSize={22} onClickCapture={handleBack}/>       
+          <ButtonText title="voltar" iconSize={22} onClickCapture={handleBack} />
         </HeadContent>
 
-        <MainContent>   
-          <h1>{ isDesktop ? "Adicionar prato" : "Novo Prato"} </h1>
+        <MainContent>
+          <h1>{isDesktop ? "Adicionar prato" : "Novo Prato"} </h1>
 
-          <Form>
+          <Form onSubmit={handleSubmit(handleNewDish)}>
             <Row>
               <Section title="Imagem do prato" className="image">
                 <Image>
@@ -146,32 +187,37 @@ export function New({ isAdmin }: NewProps){
 
                     <span>{fileName || "Selecione imagem"}</span>
 
-                    <input 
-                      id="image" 
-                      type="file" 
-                      onChange={handleImageChange}
+                    <input
+                      id="image"
+                      type="file"
+                      onChange={(e) => handleImageChange(e)}
                     />
                   </label>
+
                 </Image>
+
+                {errors.image && errors.image.message && typeof errors.image.message === 'string' ? (
+                  <ErrorMessage role="alert">{errors.image?.message}</ErrorMessage>
+                ) : null}
               </Section>
 
               <Section title="Nome" className="name">
-                <Input 
+                <Input
                   variant="secondary"
-                  type="text" 
+                  type="text"
                   placeholder="Ex.: Salada Ceasar"
-                  value={name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                  errorMessage={errors.name?.message}
+                  {...register('name')}
                 />
               </Section>
 
               <Section title="Categoria" className="category">
                 <Category>
                   <label htmlFor="category">
-                    <select 
-                      id="category" 
-                      value={category}
-                      onChange={e => setCategory(e.target.value)}>
+                    <select
+                      id="category"
+                      {...register('category')}
+                    >
                       <option value="">Selecionar</option>
                       <option value="meal">Refeição</option>
                       <option value="dessert">Sobremesa</option>
@@ -181,6 +227,11 @@ export function New({ isAdmin }: NewProps){
                     <CaretDown size={"1.5rem"} />
                   </label>
                 </Category>
+
+                {errors.category?.message ? (
+                  <ErrorMessage role="alert">{errors.category?.message}</ErrorMessage>
+                ) : null}
+
               </Section>
             </Row>
 
@@ -188,48 +239,55 @@ export function New({ isAdmin }: NewProps){
               <Section title="Ingredientes" className="ingredients">
                 <Ingredients>
                   {
-                    tags.map((tag, index) => (
-                      <FoodItem 
-                        key={String(index)}
-                        value={tag}
-                        onClick={() => handleRemoveTag(tag)}
+                    fields?.map((ingredient, index) => (
+                      <FoodItem
+                        key={ingredient.id}
+                        value={ingredient.value}
+                        onClick={() => handleRemoveTag(index)}
                       />
                     ))
                   }
 
-                  <FoodItem 
-                    isNew 
+                  <FoodItem
+                    isNew
                     placeholder="Adicionar"
-                    onChange={(e) => setNewTag(e.target.value)}
-                    value={newTag} 
+                    value={newIngredient}
+                    onChange={(event) => setNewIngredient(event.target.value)}
                     onClick={handleAddTag}
-                  />                  
+                  />
                 </Ingredients>
+
+                {errors.ingredients?.message ? (
+                  <ErrorMessage role="alert">{errors.ingredients?.message}</ErrorMessage>
+                ) : null}
+
               </Section>
 
               <Section title="Preço" className="price">
-                <Input 
+                <Input
                   variant="secondary"
-                  type="number" 
+                  type="number"
                   placeholder="R$ 00,00"
-                  value={price}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => setPrice(Number(e.target.value))}/>
+                  errorMessage={errors.price?.message}
+                  {...register('price', { valueAsNumber: true })}
+                />
               </Section>
             </Row>
 
             <Row>
               <Section title="Descrição" className="description">
-                <Textarea 
-                  placeholder="Fale brevemente sobre o prato, seus ingredientes e composição" 
-                  onChange={e => setDescription(e.target.value)}
+                <Textarea
+                  placeholder="Fale brevemente sobre o prato, seus ingredientes e composição"
+                  errorMessage={errors.description?.message}
+                  {...register('description')}
                 />
               </Section>
             </Row>
 
-            <Button 
+            <Button
+              type="submit"
               title="Salvar alterações"
-              loading={loading}
-              onClick={handleNewDish}
+              loading={isSubmitting}
             />
           </Form>
         </MainContent>

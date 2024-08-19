@@ -45,7 +45,7 @@ export function Card({ data, isAdmin, handleDetails }: CardProps) {
         />
       </Title>
 
-      {isDesktop && <p>Presunto de parma e rúcula em um pão com fermentação natural</p>}
+      {isDesktop && <p>{data.description}</p>}
       <span>R$ {data.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
 
       { 

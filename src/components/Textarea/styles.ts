@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.textarea`
+export const Container = styled.div`
+  
+`;
+
+export const Content = styled.textarea`
   width: 100%;
   height: 10.75rem;
   
@@ -24,4 +28,12 @@ export const Container = styled.textarea`
   &:focus {
     border: 1px solid ${({ theme }) => theme.COLORS.LIGHT_100};
   }
-`;
+`
+
+export const ErrorMessage = styled.p`
+  padding-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: red;
+  font-weight: 700;
+`

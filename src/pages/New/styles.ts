@@ -196,3 +196,11 @@ export const Ingredients = styled.div`
 
   border-radius: 0.5rem;
 `
+
+export const ErrorMessage = styled.p`
+  padding-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: red;
+  font-weight: 700;
+`

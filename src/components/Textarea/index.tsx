@@ -1,11 +1,22 @@
-import { TextareaHTMLAttributes } from "react";
-import { Container } from "./styles";
+import { forwardRef, LegacyRef, TextareaHTMLAttributes } from "react";
+import { Container, Content, ErrorMessage } from "./styles";
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{}
-
-export function Textarea({ value, ...rest }: TextAreaProps) {
-  return (
-    <Container {...rest}>
-    </Container>
-  );
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  errorMessage?: string;
 }
+
+export const Textarea = forwardRef(
+  function Textarea(
+    { errorMessage, ...rest }: TextAreaProps,
+    ref: LegacyRef<HTMLTextAreaElement>
+  ) {
+    return (
+      <Container>
+        <Content ref={ref} {...rest}/>
+        {errorMessage ? (
+          <ErrorMessage role="alert">{errorMessage}</ErrorMessage>
+        ) : null}
+      </Container>
+    );
+  }
+)
