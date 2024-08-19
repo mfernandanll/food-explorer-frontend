@@ -20,6 +20,7 @@ import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from "react-hook-form";
 import { dishSchema } from "../../utils/dishSchema";
+import { createDish } from "../../services/createDish";
 
 export type DishInfo = zod.infer<typeof dishSchema>
 
@@ -98,19 +99,18 @@ export function New({ isAdmin }: NewProps) {
       return setError('ingredients', 
         { message: 'Você deixou um ingrediente no campo para adicionar, mas não clicou em adicionar. Clique para adicionar ou deixe o campo vazio.' });
     }
-
-    const formattedIngredients = ingredients.map((ingredient) => ingredient.value)
-
-    const formdata = new FormData();
-    formdata.append("image", image);
-    formdata.append("name", name);
-    formdata.append("category", category);
-    formdata.append("price", price.toString());
-    formdata.append("description", description);
-    formdata.append("ingredients", JSON.stringify(formattedIngredients));
-
+  
+    const formattedIngredients = ingredients.map((ingredient) => ingredient.value);
+  
     try {
-      await api.post("/dishes", formdata);
+      await createDish({
+        name,
+        category,
+        image,
+        description,
+        ingredients: formattedIngredients,
+        price,
+      });
       alert("Prato cadastrado com sucesso!");
       navigate("/");
     } catch (error: unknown) {

@@ -14,12 +14,13 @@ import { Textarea } from "../../components/Textarea";
 import { CaretDown, UploadSimple } from "@phosphor-icons/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../services/api";
-import { Dish } from "../Home";
 
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from "react-hook-form";
 import { dishSchema } from "../../utils/dishSchema";
+import { Dish, ZodIngredientsType } from "../../@types/types";
+import { updateDish } from "../../services/updateDish";
 
 export type DishInfo = zod.infer<typeof dishSchema>
 
@@ -97,7 +98,7 @@ export function Edit({ isAdmin }: EditProps) {
   }
 
   async function handleEditDish(data: DishInfo) {
-    const { name, category, image, description, ingredients, price } = data;
+    const { image, ingredients } = data;
 
     if (newIngredient) {
       return setError('ingredients', 
@@ -106,27 +107,12 @@ export function Edit({ isAdmin }: EditProps) {
 
     const formattedIngredients = ingredients.map((ingredient) => ingredient.value)
 
+    const formattedDataObject = {...data, ingredients: formattedIngredients}
+
     setLoading(true);
 
     try {
-      const updatedDish = {
-        name,
-        category,
-        price,
-        description,
-        ingredients: JSON.stringify(formattedIngredients)
-      };
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("image", image);
-
-        await api.patch(`/dishes/${params.id}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      await api.patch(`/dishes/${params.id}`, updatedDish);
+      await updateDish(params.id as string, formattedDataObject, image);
       alert("Prato atualizado com sucesso!");
       navigate("/");
 
@@ -179,7 +165,6 @@ export function Edit({ isAdmin }: EditProps) {
   useEffect(() => {
     if (dish) {            
       const allIngredients = dish.ingredients.map((ingredient) => ({value: ingredient.name}));
-      type ExpectedType = [{ value: string; }, ...{ value: string; }[]];
       
       setFileName(dish.image ?? '');
       setValue('image', dish.image);
@@ -187,7 +172,7 @@ export function Edit({ isAdmin }: EditProps) {
       setValue('category', dish.category);
       setValue('price', dish.price);
       setValue('description', dish.description);
-      setValue('ingredients', allIngredients as ExpectedType)
+      setValue('ingredients', allIngredients as ZodIngredientsType)
     }
   }, [dish])
 

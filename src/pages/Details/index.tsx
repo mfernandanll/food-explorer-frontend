@@ -14,7 +14,8 @@ import { Minus, Plus, Receipt } from "@phosphor-icons/react";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from "../../services/api";
-import { Dish } from "../Home";
+import { Dish } from "../../@types/types";
+import { fetchDishById } from "../../services/fetchDishes";
 
 interface DetailsProps {
   isAdmin: boolean;
@@ -38,12 +39,14 @@ export function Details({ isAdmin }: DetailsProps) {
   }
 
   useEffect(() => {
-    async function fetchDish() {
-      const response = await api.get(`/dishes/${params.id}`);
-      setData(response.data);
+    async function loadDish() {
+      if (params.id) {
+        const response = await fetchDishById(params.id);
+        setData(response);
+      }
     }
 
-    fetchDish();
+    loadDish();
   }, []);
 
   return (

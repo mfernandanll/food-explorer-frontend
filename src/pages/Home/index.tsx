@@ -25,35 +25,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { useNavigate } from "react-router-dom";
-import { api } from "../../services/api";
+import { fetchDishesBySearch } from "../../services/fetchDishes";
+import { FormattedDishes } from "../../@types/types";
 
 interface HomeProps {
   isAdmin: boolean;
-}
-
-export interface Dish {
-  id: string;
-  name: string;
-  description: string;
-  category: 'meal' | 'dessert' | 'beverage';
-  price: number;
-  ingredients: Ingredient[];
-  image: string | null;
-  createdBy: string;
-  updatedBy: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Ingredient {
-  id: string;
-  name: string;
-}
-
-interface FormattedDishes {
-  meals: Dish[];
-  desserts: Dish[];
-  beverages: Dish[];
 }
 
 export function Home({ isAdmin }: HomeProps) {
@@ -66,28 +42,20 @@ export function Home({ isAdmin }: HomeProps) {
   const [dishes, setDishes] = useState<FormattedDishes>({} as FormattedDishes);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
-
+  
   const navigate = useNavigate();
-
+  
   function handleDetails(id: string) {
     navigate(`/details/${id}`);
   }
-
+  
   useEffect(() => {
-    async function fetchDishes() {
-      const response = await api.get<Dish[]>(`/dishes?search=${search}`);      
-      const meals = response.data.filter((dish) => dish.category === "meal");
-      const desserts = response.data.filter(
-        (dish) => dish.category === "dessert"
-      );
-      const beverages = response.data.filter(
-        (dish) => dish.category === "beverage"
-      );
-      
-      setDishes({ meals, desserts, beverages });
+    async function loadDishes() {
+      const dishes = await fetchDishesBySearch(search);
+      setDishes(dishes);
     }
-
-    fetchDishes();
+  
+    loadDishes();
   }, [search]);
 
   return (

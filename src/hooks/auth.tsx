@@ -3,6 +3,7 @@ import { api } from "../services/api";
 
 interface AuthContextType {
   signIn: (name: string, password: string) => Promise<void>,
+  signUp: (name: string, email: string, password: string) => Promise<void>,
   signOut: () => void,
   user: User;
 }
@@ -31,14 +32,14 @@ interface UserInfo {
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<UserInfo>({} as UserInfo);
 
-  async function signIn( email: string, password: string ) {
+  async function signIn(email: string, password: string) {
     try {
       const response = await api.post<UserInfo>("sessions", { email, password });
       const { token, user } = response.data;
 
       localStorage.setItem("@foodexplorer:user", JSON.stringify(user));
       localStorage.setItem("@foodexplorer:token", token);
-      
+
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       setData({ token, user });
@@ -50,7 +51,21 @@ function AuthProvider({ children }: AuthProviderProps) {
       }
     }
   }
-  
+
+  async function signUp(name: string, email: string, password: string): Promise<void> {
+    try {
+      await api.post("/users", { name, email, password });
+      alert("Cadastro realizado com sucesso");
+    } catch (error: unknown) {
+      if (error instanceof Error && 'response' in error && error.response) {
+        alert((error.response as any).data.message);
+      } else {
+        alert("Não foi possível cadastrar.");
+      }
+      throw error;
+    }
+  }
+
   function signOut() {
     localStorage.removeItem("@foodexplorer:token");
     localStorage.removeItem("@foodexplorer:user");
@@ -74,8 +89,9 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ 
+      value={{
         signIn,
+        signUp,
         signOut,
         user: data.user
       }}

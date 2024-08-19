@@ -6,7 +6,7 @@ import { CaretRight, HeartStraight, Minus, PencilSimple, Plus } from "@phosphor-
 
 import { useNavigate } from 'react-router-dom';
 import { api } from "../../services/api";
-import { Dish } from "../../pages/Home";
+import { Dish } from "../../@types/types";
 
 interface CardProps {
   data: Dish;

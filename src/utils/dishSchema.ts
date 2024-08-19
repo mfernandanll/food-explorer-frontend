@@ -1,11 +1,11 @@
 import * as zod from 'zod'
 
-const MAX_FILE_SIZE = 200000;
+const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const imageSchema = zod
   .any()
-  .refine((file: File) => file?.size <= MAX_FILE_SIZE, `O tamanho máximo do arquivo é 2MB.`)
+  .refine((file: File) => file?.size <= MAX_FILE_SIZE, `O tamanho máximo do arquivo é 10MB.`)
   .refine(
     (file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
     "Apenas arquivos de extensão .jpg, .jpeg, .png e .webp são aceitos"

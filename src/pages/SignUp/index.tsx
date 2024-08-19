@@ -9,6 +9,7 @@ import { api } from "../../services/api";
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../hooks/auth";
 
 const user = zod.object({
   name: zod.string().min(1, 'Informe o nome'),
@@ -27,23 +28,21 @@ export function SignUp(){
   } = useForm<UserInfo>({
     resolver: zodResolver(user),
   })
+  
+  const { signUp } = useAuth();
 
   const navigate = useNavigate();
 
-  function handleSignUp(data: UserInfo) {
+  async function handleSignUp(data: UserInfo) {
     const { name, email, password } = data;
 
-    api.post("/users", {name, email, password})
-       .then(() => {
-        alert("Cadastro realizado com sucesso");
-        navigate("/");
-       }).catch(error => {
-          if (error.response) {
-            alert(error.response.data.message);
-          } else {
-            alert("Não foi possível cadastrar");
-          }
-       })
+    try {
+      await signUp(name, email, password);
+      navigate("/");
+      reset();
+    } catch (error) {
+      alert("Não foi possível cadastrar.");
+    }
     
     reset();
   }
