@@ -18,11 +18,11 @@ import { api } from "../../services/api";
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from "react-hook-form";
-import { dishSchema } from "../../utils/dishSchema";
+import { dishEditSchema } from "../../utils/dishSchema";
 import { Dish, ZodIngredientsType } from "../../@types/types";
 import { updateDish } from "../../services/updateDish";
 
-export type DishInfo = zod.infer<typeof dishSchema>
+export type DishInfo = zod.infer<typeof dishEditSchema>
 
 export function Edit() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +46,7 @@ export function Edit() {
     watch,
     formState: { errors, isSubmitting }
   } = useForm<DishInfo>({
-    resolver: zodResolver(dishSchema),
+    resolver: zodResolver(dishEditSchema),
     defaultValues: {
       ingredients: [],
     },
@@ -163,7 +163,7 @@ export function Edit() {
       const allIngredients = dish.ingredients.map((ingredient) => ({value: ingredient.name}));
       
       setFileName(dish.image ?? '');
-      setValue('image', dish.image);
+      setValue('image', undefined);
       setValue('name', dish.name);
       setValue('category', dish.category);
       setValue('price', dish.price);
@@ -175,13 +175,11 @@ export function Edit() {
   return (
     <Container>
       <SideMenu
-        isAdmin={true}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen} 
       />
       <FixedContent>
         <Header
-          isAdmin={true}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen} 
         />

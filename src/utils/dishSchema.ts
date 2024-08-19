@@ -5,7 +5,9 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 const imageSchema = zod
   .any()
-  .refine((file: File) => file?.size <= MAX_FILE_SIZE, `O tamanho máximo do arquivo é 10MB.`)
+  .refine(
+    (file: File) => file?.size <= MAX_FILE_SIZE
+    , `O tamanho máximo do arquivo é 10MB.`)
   .refine(
     (file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
     "Apenas arquivos de extensão .jpg, .jpeg, .png e .webp são aceitos"
@@ -32,3 +34,9 @@ export const dishSchema = zod.object({
     value: zod.string()
   })).nonempty('Adicione pelo menos um ingrediente ao prato'),
 })
+
+const imageSchemaEdit = imageSchema.optional();
+
+export const dishEditSchema = dishSchema.extend({
+  image: imageSchemaEdit,
+});
