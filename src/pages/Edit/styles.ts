@@ -158,6 +158,10 @@ export const Category = styled.div`
   background-color: ${({ theme }) => theme.COLORS.DARK_800};
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
+
+  &:focus-within {
+    border: 1px solid ${({ theme }) => theme.COLORS.LIGHT_100};
+  }
   
   > label {
     position: relative;
@@ -178,6 +182,10 @@ export const Category = styled.div`
       font-family: "Roboto", sans-serif;
       font-size: 0.875rem;
       font-weight: 400;
+
+      &:focus {
+        outline: none;
+      }
 
       > option {
         background-color: ${({ theme }) => theme.COLORS.DARK_900};
